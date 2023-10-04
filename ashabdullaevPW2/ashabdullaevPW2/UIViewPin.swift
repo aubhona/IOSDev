@@ -1,8 +1,8 @@
 //
-//  UIView+Pin.swift
-//  Seminar2
+//  UIViewPin.swift
+//  ashabdullaevPW2
 //
-//  Created by Aubkhon Abdullaev on 22.09.2023.
+//  Created by Aubkhon Abdullaev on 04.10.2023.
 //
 
 import UIKit
@@ -295,3 +295,4 @@ extension UIView {
         return result
     }
 }
+

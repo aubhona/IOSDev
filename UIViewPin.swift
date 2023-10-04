@@ -1,10 +1,3 @@
-//
-//  UIView+Pin.swift
-//  Seminar2
-//
-//  Created by Aubkhon Abdullaev on 22.09.2023.
-//
-
 import UIKit
 
 // MARK: - Pin methods
