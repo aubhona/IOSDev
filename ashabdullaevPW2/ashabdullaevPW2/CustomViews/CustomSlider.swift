@@ -8,7 +8,15 @@
 import UIKit
 
 final class CustomSlider: UIView {
-    var valueChanged: ((Double) -> Void)?
+    enum Constants {
+        static let titleLabelTop = 10.0
+        static let titleLabelLeft = 20.0
+        
+        static let sliderBottom = 10.0
+        static let sliderLeft = 20.0
+    }
+    
+    var valueChanged: (() -> Void)?
     
     var slider = UISlider()
     var titleView = UILabel()
@@ -29,27 +37,23 @@ final class CustomSlider: UIView {
     
     private func configureUI() {
         backgroundColor = .white
-        translatesAutoresizingMaskIntoConstraints = false
         
         for view in [slider, titleView] {
             addSubview(view)
-            view.translatesAutoresizingMaskIntoConstraints = false
         }
         
-        NSLayoutConstraint.activate([
-            titleView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            titleView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            titleView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            
-            slider.topAnchor.constraint(equalTo: titleView.bottomAnchor),
-            slider.centerXAnchor.constraint(equalTo: centerXAnchor),
-            slider.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
-            slider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20)
-        ])
+        titleView.pinCenterX(to: centerXAnchor)
+        titleView.pinTop(to: topAnchor, Constants.titleLabelTop)
+        titleView.pinLeft(to: leadingAnchor, Constants.titleLabelLeft)
+        
+        slider.pinTop(to: titleView.bottomAnchor)
+        slider.pinCenterX(to: centerXAnchor)
+        slider.pinBottom(to: bottomAnchor, Constants.sliderBottom)
+        slider.pinLeft(to: leadingAnchor, Constants.sliderLeft)
     }
     
     @objc
     private func sliderValueChanged() {
-        valueChanged?(Double(slider.value))
+        valueChanged?()
     }
 }

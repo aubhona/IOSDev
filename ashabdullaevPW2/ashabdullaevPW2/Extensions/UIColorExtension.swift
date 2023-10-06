@@ -19,8 +19,7 @@ extension UIColor {
         
         static let maxBaseValue : String = "FF"
         
-        static let maxOfColorValue : CGFloat = 255.0
-        static let maxOfRgbColorValue : Int = 255
+        static let colorMaxValue : Int = 255
         static let countOfColors : Int = 3;
         
         static let minAlphaValue : Int = 128
@@ -43,10 +42,10 @@ extension UIColor {
         let hexColorChanged = hexColor.replacingOccurrences(of: "#", with: "") + (hexColor.count != Constants.colorLen ? Constants.maxBaseValue : "")
         
         let rgb = UInt64(hexColorChanged, radix: Constants.colorBase)!
-        let red = CGFloat((rgb & Constants.redMask) >> Constants.redPos) / Constants.maxOfColorValue
-        let green = CGFloat((rgb & Constants.greenMask) >> Constants.greenPos) / Constants.maxOfColorValue
-        let blue = CGFloat((rgb & Constants.blueMask) >> Constants.bluePos) / Constants.maxOfColorValue
-        let alpha = CGFloat(rgb & Constants.alfaMask) / Constants.maxOfColorValue
+        let red = CGFloat((rgb & Constants.redMask) >> Constants.redPos) / CGFloat(Constants.colorMaxValue)
+        let green = CGFloat((rgb & Constants.greenMask) >> Constants.greenPos) / CGFloat(Constants.colorMaxValue)
+        let blue = CGFloat((rgb & Constants.blueMask) >> Constants.bluePos) / CGFloat(Constants.colorMaxValue)
+        let alpha = CGFloat(rgb & Constants.alfaMask) / CGFloat(Constants.colorMaxValue)
         
         self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
@@ -56,7 +55,7 @@ extension UIColor {
     static func generateRandomHexColor() -> String {
         var hexColor = "#"
         for _ in 0 ..< Constants.countOfColors {
-            let randomHex = String(Int.random(in: 0...Constants.maxOfRgbColorValue), radix: Constants.colorBase)
+            let randomHex = String(Int.random(in: 0...Constants.colorMaxValue), radix: Constants.colorBase)
             hexColor += randomHex.count == 1 ? "0" + randomHex : randomHex
         }
         hexColor += String(Int.random(in: Constants.minAlphaValue...Constants.maxAlphaValue), radix: Constants.colorBase)

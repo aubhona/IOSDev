@@ -7,23 +7,70 @@
 
 import UIKit
 
-final class WishMakerViewController: UIViewController {
+final class WishMakerViewController: UIViewController, UIColorPickerViewControllerDelegate {
+    // - MARK: Constants
     enum Constants {
         static let titleText: String = "WishMaker"
         static let titleBackgroundColor = "#FFFFF0"
         static let titleFontSize: CGFloat = 32
         static let titleTop: CGFloat = 30
         
-        static let descriptionText: String = "WishMaker change color of your life!"
+        static let descriptionText: String = "This app will bring your joy and will fulfill three of your wishes!\n\t- The first is to change the background color."
         static let descriptionColor : String = "#E5FCC2"
         static let descriptionLeft : CGFloat = 20
         static let descriptionTop : CGFloat = 20
         static let descriptionFontSize : CGFloat = 16
+        static let descriptionNumberOfLines : Int = 0
         
+        static let sliderMin: Double = 0
+        static let sliderMax: Double = 1
+        
+        static let red: String = "Red"
+        static let green: String = "Green"
+        static let blue: String = "Blue"
+        static let alpha: String = "Alpha"
+        
+        static let alphaDefaultValue : Float = 0.5
+        
+        static let stackRadius: CGFloat = 20
+        static let stackBottom: CGFloat = 40
+        static let stackLeading: CGFloat = 20
+        
+        static let buttonBottom: CGFloat = 20
+        
+        static let redSliderInd: Int = 0
+        static let greenSliderInd: Int = 1
+        static let blueSliderInd: Int = 2
+        static let alphaSliderInd: Int = 3
+        
+        static let slidersHiddenSwitchText: String = "Sliders"
+        static let alphaHiddenSwitchText: String = "Alpha"
+        
+        static let switchesStackWidth: Double = 75
+        static let switchesStackLeft: Double = 25
+        
+        static let animationDuration: Double = 0.45
+        
+        static let randomColorButtonText: String = "Random"
+        static let randomColorButtonCornerRadius: Double = 10
+        static let randomColorButtonLeft: Double = 20
+        static let randomColorButtonBottom: Double = 10
+        static let randomColorButtonWidth: Double = 75
+        
+        static let colorPickerCornerRadius: Double = 10
+        static let colorPickerCornerWidth: Double = 75
+        static let colorPickerCornerBottom: Double = 10
+        static let colorPickerCornerLeft: Double = 20
     }
     
-    private var titleView: UILabel = UILabel()
-    private var descrptionView : UILabel = UILabel()
+    // - MARK: Views
+    private var titleLabel: UILabel = UILabel()
+    private var descrptionLabel : UILabel = UILabel()
+    private var slidersStack: UIStackView = UIStackView()
+    private var switchesStack: UIStackView = UIStackView()
+    private var randomColorButton : UIButton = UIButton()
+    private var colorPickerButton : UIButton = UIButton()
+    private var backgroundColorChanged : (() -> (Void))?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,59 +78,206 @@ final class WishMakerViewController: UIViewController {
     }
     
     private func configureUI() {
-        view.backgroundColor = UIColor(UIColor.generateRandomHexColor());
-        
-        configureTittle()
+        configureTitle()
         configureDescription()
         configureSliders()
+        configureSwitches()
+        configureButtonRandomColor()
+        configureColorPickerButton()
     }
     
-    private func configureTittle() {
-        titleView.text = Constants.titleText
-        titleView.font = UIFont.boldSystemFont(ofSize: Constants.titleFontSize)
-        titleView.textColor = UIColor(Constants.titleBackgroundColor);
+    // - MARK: Configure title
+    private func configureTitle() {
+        titleLabel.text = Constants.titleText
+        titleLabel.font = UIFont.boldSystemFont(ofSize: Constants.titleFontSize)
+        titleLabel.textColor = UIColor(Constants.titleBackgroundColor);
         
-        view.addSubview(titleView)
-        titleView.pinCenterX(to: view)
-        titleView.pinTop(to: view.safeAreaLayoutGuide.topAnchor, Constants.titleTop)
+        view.addSubview(titleLabel)
+        
+        titleLabel.pinCenterX(to: view)
+        titleLabel.pinTop(to: view.safeAreaLayoutGuide.topAnchor, Constants.titleTop)
     }
     
+    // - MARK: Configure description
     private func configureDescription() {
-        descrptionView.text = Constants.descriptionText
-        descrptionView.font = UIFont.boldSystemFont(ofSize: Constants.descriptionFontSize)
-        descrptionView.textColor = UIColor(Constants.descriptionColor);
+        descrptionLabel.text = Constants.descriptionText
+        descrptionLabel.font = UIFont.boldSystemFont(ofSize: Constants.descriptionFontSize)
+        descrptionLabel.textColor = UIColor(Constants.descriptionColor);
+        descrptionLabel.numberOfLines = Constants.descriptionNumberOfLines
         
-        view.addSubview(descrptionView)
-        descrptionView.pinCenterX(to: view)
-        descrptionView.pinLeft(to: view, Constants.descriptionLeft)
-        descrptionView.pinTop(to: view.bottomAnchor, Constants.descriptionTop)
+        view.addSubview(descrptionLabel)
+        
+        descrptionLabel.pinCenterX(to: view)
+        descrptionLabel.pinLeft(to: view, Constants.descriptionLeft)
+        descrptionLabel.pinTop(to: titleLabel.bottomAnchor, Constants.descriptionTop)
     }
     
+    // - MARK: Configure sliders
     private func configureSliders() {
-        let stack = UIStackView()
-        stack.backgroundColor = UIColor(UIColor.generateRandomHexColor())
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .vertical
-        view.addSubview(stack)
-        stack.layer.cornerRadius = 20
-        stack.clipsToBounds = true
+        slidersStack.axis = .vertical
+        slidersStack.layer.cornerRadius = Constants.stackRadius
+        slidersStack.clipsToBounds = true
+        slidersStack.isHidden = true
         
-        let sliderRed = CustomSlider(title: "Red", min: 0, max: 1)
-        let sliderBlue = CustomSlider(title: "Blue", min: 0, max: 255)
-        let sliderGreen = CustomSlider(title: "Green", min: 0, max: 255)
+        view.addSubview(slidersStack)
         
-        for slider in [sliderRed, sliderBlue, sliderGreen] {
-            stack.addArrangedSubview(slider)
+        let sliderRed = CustomSlider(title: Constants.red, min: Constants.sliderMin, max: Constants.sliderMax)
+        let sliderBlue = CustomSlider(title: Constants.blue, min: Constants.sliderMin, max: Constants.sliderMax)
+        let sliderGreen = CustomSlider(title: Constants.green, min: Constants.sliderMin, max: Constants.sliderMax)
+        let sliderAlpha = CustomSlider(title: Constants.alpha, min: Constants.sliderMin, max: Constants.sliderMax)
+        
+        sliderRed.slider.minimumTrackTintColor = .red
+        sliderBlue.slider.minimumTrackTintColor = .blue
+        sliderGreen.slider.minimumTrackTintColor = .green
+        sliderRed.titleView.textColor = .white
+        sliderBlue.titleView.textColor = .white
+        sliderGreen.titleView.textColor = .white
+        sliderAlpha.titleView.textColor = .white
+        sliderAlpha.slider.value = Constants.alphaDefaultValue
+        
+        for slider in [sliderRed, sliderGreen, sliderBlue, sliderAlpha] {
+            slidersStack.addArrangedSubview(slider)
+            slider.backgroundColor = view.backgroundColor
+            slider.valueChanged = { [weak self] in
+                self?.view.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: CGFloat(sliderAlpha.slider.value))
+            }
         }
         
-        NSLayoutConstraint.activate([
-            stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40)
-        ])
-        
-        sliderRed.valueChanged = { [weak self] value in
-            self?.view.backgroundColor = UIColor(UIColor.generateRandomHexColor())
+        backgroundColorChanged = {[weak sliderRed, weak sliderGreen, weak sliderBlue, weak sliderAlpha, weak self] in
+            sliderRed?.slider.value = Float(self?.view.backgroundColor?.cgColor.components?[Constants.redSliderInd] ?? 0)
+            sliderGreen?.slider.value = Float(self?.view.backgroundColor?.cgColor.components?[Constants.greenSliderInd] ?? 0)
+            sliderBlue?.slider.value = Float(self?.view.backgroundColor?.cgColor.components?[Constants.blueSliderInd] ?? 0)
+            sliderAlpha?.slider.value = Float(self?.view.backgroundColor?.cgColor.components?[Constants.alphaSliderInd] ?? 1)
         }
+        
+        slidersStack.pinCenterX(to: view)
+        slidersStack.pinLeft(to: view, Constants.stackLeading)
+        slidersStack.pinBottom(to: view, Constants.stackBottom)
+        
+        slidersStack.alpha = CGFloat(Constants.alphaDefaultValue)
+        slidersStack.isHidden = true
+        
+        sliderAlpha.alpha = CGFloat(Constants.alphaDefaultValue)
+        sliderAlpha.isHidden = true
+        
+    }
+    
+    // - MARK: Configure switches
+    private func configureSwitches(){
+        switchesStack.layer.cornerRadius = Constants.stackRadius
+        switchesStack.clipsToBounds = true
+        switchesStack.axis = .vertical
+        
+        view.addSubview(switchesStack)
+        
+        switchesStack.setWidth(Constants.switchesStackWidth)
+        
+        let slidersHiddenSwitch = CustomSwitch(title: Constants.slidersHiddenSwitchText)
+        let alphaHiddenSwitch = CustomSwitch(title: Constants.alphaHiddenSwitchText)
+        
+        alphaHiddenSwitch.alpha = CGFloat(Constants.alphaDefaultValue)
+        alphaHiddenSwitch.isHidden = true
+        alphaHiddenSwitch.titleLabel.textColor = .white
+        slidersHiddenSwitch.titleLabel.textColor = .white
+        
+        
+        for switchView in [alphaHiddenSwitch, slidersHiddenSwitch] {
+            switchesStack.addArrangedSubview(switchView)
+            switchView.backgroundColor = view.backgroundColor
+        }
+        
+        slidersHiddenSwitch.tapped = {[weak self, weak slidersHiddenSwitch, weak alphaHiddenSwitch] in
+            if ((slidersHiddenSwitch?.innerSwitch.isOn ?? true)){
+                self?.slidersStack.isHidden = false
+                alphaHiddenSwitch?.isHidden = false
+            }
+            UIView.animate(withDuration: Constants.animationDuration, animations: { [weak self, weak slidersHiddenSwitch] in
+                self?.slidersStack.alpha = (slidersHiddenSwitch?.innerSwitch.isOn ?? true) ? 1 : 0
+                alphaHiddenSwitch?.alpha = (slidersHiddenSwitch?.innerSwitch.isOn ?? true) ? 1 : 0
+            }, completion: {_ in
+                if (!(slidersHiddenSwitch?.innerSwitch.isOn ?? true)){
+                    self?.slidersStack.isHidden = true
+                    alphaHiddenSwitch?.isHidden = true
+                }
+            })
+        }
+        
+        alphaHiddenSwitch.tapped = {[weak self, weak alphaHiddenSwitch] in
+            if ((alphaHiddenSwitch?.innerSwitch.isOn ?? true)){
+                self?.slidersStack.arrangedSubviews.last?.isHidden = false
+            }
+            UIView.animate(withDuration: Constants.animationDuration, animations: { [weak self, weak alphaHiddenSwitch] in
+                self?.slidersStack.arrangedSubviews.last?.alpha = (alphaHiddenSwitch?.innerSwitch.isOn ?? true) ? 1 : 0
+            }, completion: {_ in
+                if (!(alphaHiddenSwitch?.innerSwitch.isOn ?? true)){
+                    self?.slidersStack.arrangedSubviews.last?.isHidden = true
+                }
+            })
+        }
+        
+        switchesStack.pinLeft(to: slidersStack.leadingAnchor, Constants.switchesStackLeft)
+        switchesStack.pinBottom(to: slidersStack.topAnchor)
+    }
+    
+    // - MARK: Configure button random color
+    private func configureButtonRandomColor() {
+        randomColorButton.setTitle(Constants.randomColorButtonText, for: .normal)
+        randomColorButton.backgroundColor = .blue
+        randomColorButton.setTitleColor(.white, for: .normal)
+        randomColorButton.layer.cornerRadius = Constants.randomColorButtonCornerRadius
+        randomColorButton.addTarget(self, action: #selector(randomColorButtonTapped), for: .touchUpInside)
+        
+        view.addSubview(randomColorButton)
+        
+        randomColorButton.pinLeft(to: switchesStack.trailingAnchor, Constants.randomColorButtonLeft)
+        randomColorButton.pinBottom(to: switchesStack, Constants.randomColorButtonBottom)
+        randomColorButton.setWidth(Constants.randomColorButtonWidth)
+    }
+    
+    @objc func randomColorButtonTapped() {
+        view.backgroundColor = UIColor(UIColor.generateRandomHexColor())
+        backgroundColorChanged?()
+    }
+    
+    // - MARK: Configure color picker button
+    private func configureColorPickerButton() {
+        colorPickerButton.setTitle("Select", for: .normal)
+        colorPickerButton.backgroundColor = .blue
+        colorPickerButton.layer.cornerRadius = Constants.colorPickerCornerRadius
+        colorPickerButton.addTarget(self, action: #selector(colorButtonTapped), for: .touchUpInside)
+        
+        view.addSubview(colorPickerButton)
+        
+        colorPickerButton.setWidth(Constants.colorPickerCornerWidth)
+        colorPickerButton.pinBottom(to: switchesStack, Constants.colorPickerCornerBottom)
+        colorPickerButton.pinLeft(to: randomColorButton.trailingAnchor, Constants.colorPickerCornerLeft)
+        
+    }
+    
+    @available(iOS 14.0, *)
+    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+        view.backgroundColor = viewController.selectedColor
+        backgroundColorChanged?()
+        viewController.dismiss(animated: true)
+    }
+    
+    @available(iOS 14.0, *)
+    func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
+        view.backgroundColor = viewController.selectedColor
+        backgroundColorChanged?()
+    }
+    
+    private func presentColorPicker() {
+        if #available(iOS 14.0, *) {
+            let colorPicker = UIColorPickerViewController()
+            colorPicker.delegate = self
+            present(colorPicker, animated: true)
+            return
+        }
+        randomColorButtonTapped()
+    }
+    
+    @objc private func colorButtonTapped() {
+        presentColorPicker()
     }
 }
