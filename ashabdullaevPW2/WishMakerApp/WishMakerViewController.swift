@@ -8,7 +8,7 @@
 import UIKit
 
 final class WishMakerViewController: UIViewController, UIColorPickerViewControllerDelegate {
-    // - MARK: Constants
+    // MARK: - Constants
     enum Constants {
         static let titleText: String = "WishMaker"
         static let titleBackgroundColor = "#FFFFF0"
@@ -61,9 +61,16 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         static let colorPickerCornerWidth: Double = 75
         static let colorPickerCornerBottom: Double = 10
         static let colorPickerCornerLeft: Double = 20
+        
+        static let wishButtonHeight: Double = 35
+        static let wishButtonCornerRadius: Double = 15
+        static let wishButtonBottom: Double = 50
+        static let wishButtonSide: Double = 25
+        static let wishButtonText: String = "My wishes"
+        
     }
     
-    // - MARK: Views
+    // MARK: - Views
     private var titleLabel: UILabel = UILabel()
     private var descrptionLabel : UILabel = UILabel()
     private var slidersStack: UIStackView = UIStackView()
@@ -71,6 +78,7 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     private var randomColorButton : UIButton = UIButton()
     private var colorPickerButton : UIButton = UIButton()
     private var backgroundColorChanged : (() -> (Void))?
+    private var addWishButton: UIButton = UIButton(type: .system)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,13 +88,14 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     private func configureUI() {
         configureTitle()
         configureDescription()
+        configureAddWishButton()
         configureSliders()
         configureSwitches()
         configureButtonRandomColor()
         configureColorPickerButton()
     }
     
-    // - MARK: Configure title
+    // MARK: - Configure title
     private func configureTitle() {
         titleLabel.text = Constants.titleText
         titleLabel.font = UIFont.boldSystemFont(ofSize: Constants.titleFontSize)
@@ -98,7 +107,7 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         titleLabel.pinTop(to: view.safeAreaLayoutGuide.topAnchor, Constants.titleTop)
     }
     
-    // - MARK: Configure description
+    // MARK: - Configure description
     private func configureDescription() {
         descrptionLabel.text = Constants.descriptionText
         descrptionLabel.font = UIFont.boldSystemFont(ofSize: Constants.descriptionFontSize)
@@ -112,7 +121,7 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         descrptionLabel.pinTop(to: titleLabel.bottomAnchor, Constants.descriptionTop)
     }
     
-    // - MARK: Configure sliders
+    // MARK: - Configure sliders
     private func configureSliders() {
         slidersStack.axis = .vertical
         slidersStack.layer.cornerRadius = Constants.stackRadius
@@ -152,7 +161,7 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         
         slidersStack.pinCenterX(to: view)
         slidersStack.pinLeft(to: view, Constants.stackLeading)
-        slidersStack.pinBottom(to: view, Constants.stackBottom)
+        slidersStack.pinBottom(to: addWishButton.topAnchor, Constants.stackBottom)
         
         slidersStack.alpha = CGFloat(Constants.alphaDefaultValue)
         slidersStack.isHidden = true
@@ -162,7 +171,7 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         
     }
     
-    // - MARK: Configure switches
+    // MARK: - Configure switches
     private func configureSwitches(){
         switchesStack.layer.cornerRadius = Constants.stackRadius
         switchesStack.clipsToBounds = true
@@ -219,7 +228,27 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         switchesStack.pinBottom(to: slidersStack.topAnchor)
     }
     
-    // - MARK: Configure button random color
+    // MARK: - Configure add wish button
+    private func configureAddWishButton() {
+        view.addSubview(addWishButton)
+        addWishButton.setHeight(Constants.wishButtonHeight)
+        addWishButton.pinBottom(to: view, Constants.wishButtonBottom)
+        addWishButton.pinHorizontal(to: view, Constants.wishButtonSide)
+        
+        addWishButton.backgroundColor = .white
+        addWishButton.setTitleColor(.systemPink, for: .normal)
+        addWishButton.setTitle(Constants.wishButtonText, for: .normal)
+        
+        addWishButton.layer.cornerRadius = Constants.wishButtonCornerRadius
+        addWishButton.addTarget(self, action: #selector(addWishButtonPressed), for: .touchUpInside)
+    }
+    
+    @objc func addWishButtonPressed() {
+        present(WishStoringViewController(), animated: true)
+        
+    }
+    
+    // MARK: - Configure button random color
     private func configureButtonRandomColor() {
         randomColorButton.setTitle(Constants.randomColorButtonText, for: .normal)
         randomColorButton.backgroundColor = .blue
@@ -239,7 +268,7 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         backgroundColorChanged?()
     }
     
-    // - MARK: Configure color picker button
+    // MARK: - Configure color picker button
     private func configureColorPickerButton() {
         colorPickerButton.setTitle("Select", for: .normal)
         colorPickerButton.backgroundColor = .blue

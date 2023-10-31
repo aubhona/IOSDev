@@ -15,10 +15,12 @@
 		0136E1D72ACC5F5B00171788 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0136E1D62ACC5F5B00171788 /* CustomSlider.swift */; };
 		0163C54D2ACD6B7B000C5665 /* UIViewPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0163C54C2ACD6B7B000C5665 /* UIViewPin.swift */; };
 		01D443C42AD02C6F00A81F5E /* CustomSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D443C32AD02C6F00A81F5E /* CustomSwitch.swift */; };
+		01F761E82AEFCACB003F19EF /* WishStoringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F761E72AEFCACB003F19EF /* WishStoringViewController.swift */; };
+		01F761EA2AEFCE3F003F19EF /* WrittenWishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F761E92AEFCE3F003F19EF /* WrittenWishCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0136E1BB2ACC47F600171788 /* ashabdullaevPW2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ashabdullaevPW2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0136E1BB2ACC47F600171788 /* WishMakerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WishMakerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0136E1BE2ACC47F600171788 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0136E1C02ACC47F600171788 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		0136E1C72ACC47F700171788 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -28,6 +30,8 @@
 		0136E1D62ACC5F5B00171788 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		0163C54C2ACD6B7B000C5665 /* UIViewPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPin.swift; sourceTree = "<group>"; };
 		01D443C32AD02C6F00A81F5E /* CustomSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSwitch.swift; sourceTree = "<group>"; };
+		01F761E72AEFCACB003F19EF /* WishStoringViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishStoringViewController.swift; sourceTree = "<group>"; };
+		01F761E92AEFCE3F003F19EF /* WrittenWishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittenWishCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,7 +48,7 @@
 		0136E1B22ACC47F600171788 = {
 			isa = PBXGroup;
 			children = (
-				0136E1BD2ACC47F600171788 /* ashabdullaevPW2 */,
+				0136E1BD2ACC47F600171788 /* WishMakerApp */,
 				0136E1BC2ACC47F600171788 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,12 +56,12 @@
 		0136E1BC2ACC47F600171788 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0136E1BB2ACC47F600171788 /* ashabdullaevPW2.app */,
+				0136E1BB2ACC47F600171788 /* WishMakerApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		0136E1BD2ACC47F600171788 /* ashabdullaevPW2 */ = {
+		0136E1BD2ACC47F600171788 /* WishMakerApp */ = {
 			isa = PBXGroup;
 			children = (
 				0162E3A22AD0BAB700B1597C /* Extensions */,
@@ -65,10 +69,11 @@
 				0136E1D22ACC4F1900171788 /* WishMakerViewController.swift */,
 				0136E1BE2ACC47F600171788 /* AppDelegate.swift */,
 				0136E1C02ACC47F600171788 /* SceneDelegate.swift */,
+				01F761E72AEFCACB003F19EF /* WishStoringViewController.swift */,
 				0136E1C72ACC47F700171788 /* Assets.xcassets */,
 				0136E1CC2ACC47F700171788 /* Info.plist */,
 			);
-			path = ashabdullaevPW2;
+			path = WishMakerApp;
 			sourceTree = "<group>";
 		};
 		0162E3A12AD0BA4A00B1597C /* CustomViews */ = {
@@ -76,6 +81,7 @@
 			children = (
 				01D443C32AD02C6F00A81F5E /* CustomSwitch.swift */,
 				0136E1D62ACC5F5B00171788 /* CustomSlider.swift */,
+				01F761E92AEFCE3F003F19EF /* WrittenWishCell.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -92,9 +98,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		0136E1BA2ACC47F600171788 /* ashabdullaevPW2 */ = {
+		0136E1BA2ACC47F600171788 /* WishMakerApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0136E1CF2ACC47F700171788 /* Build configuration list for PBXNativeTarget "ashabdullaevPW2" */;
+			buildConfigurationList = 0136E1CF2ACC47F700171788 /* Build configuration list for PBXNativeTarget "WishMakerApp" */;
 			buildPhases = (
 				0136E1B72ACC47F600171788 /* Sources */,
 				0136E1B82ACC47F600171788 /* Frameworks */,
@@ -104,9 +110,9 @@
 			);
 			dependencies = (
 			);
-			name = ashabdullaevPW2;
+			name = WishMakerApp;
 			productName = ashabdullaevPW2;
-			productReference = 0136E1BB2ACC47F600171788 /* ashabdullaevPW2.app */;
+			productReference = 0136E1BB2ACC47F600171788 /* WishMakerApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -124,7 +130,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 0136E1B62ACC47F600171788 /* Build configuration list for PBXProject "ashabdullaevPW2" */;
+			buildConfigurationList = 0136E1B62ACC47F600171788 /* Build configuration list for PBXProject "WishMakerApp" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -137,7 +143,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				0136E1BA2ACC47F600171788 /* ashabdullaevPW2 */,
+				0136E1BA2ACC47F600171788 /* WishMakerApp */,
 			);
 		};
 /* End PBXProject section */
@@ -160,7 +166,9 @@
 			files = (
 				0163C54D2ACD6B7B000C5665 /* UIViewPin.swift in Sources */,
 				0136E1BF2ACC47F600171788 /* AppDelegate.swift in Sources */,
+				01F761E82AEFCACB003F19EF /* WishStoringViewController.swift in Sources */,
 				0136E1D72ACC5F5B00171788 /* CustomSlider.swift in Sources */,
+				01F761EA2AEFCE3F003F19EF /* WrittenWishCell.swift in Sources */,
 				0136E1C12ACC47F600171788 /* SceneDelegate.swift in Sources */,
 				01D443C42AD02C6F00A81F5E /* CustomSwitch.swift in Sources */,
 				0136E1D32ACC4F1900171788 /* WishMakerViewController.swift in Sources */,
@@ -298,7 +306,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ashabdullaevPW2/Info.plist;
+				INFOPLIST_FILE = WishMakerApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -309,7 +317,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = aubhona.ashabdullaevPW2;
+				PRODUCT_BUNDLE_IDENTIFIER = aubhona.WishMakerApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -325,7 +333,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ashabdullaevPW2/Info.plist;
+				INFOPLIST_FILE = WishMakerApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -336,7 +344,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = aubhona.ashabdullaevPW2;
+				PRODUCT_BUNDLE_IDENTIFIER = aubhona.WishMakerApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -347,7 +355,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0136E1B62ACC47F600171788 /* Build configuration list for PBXProject "ashabdullaevPW2" */ = {
+		0136E1B62ACC47F600171788 /* Build configuration list for PBXProject "WishMakerApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0136E1CD2ACC47F700171788 /* Debug */,
@@ -356,7 +364,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0136E1CF2ACC47F700171788 /* Build configuration list for PBXNativeTarget "ashabdullaevPW2" */ = {
+		0136E1CF2ACC47F700171788 /* Build configuration list for PBXNativeTarget "WishMakerApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0136E1D02ACC47F700171788 /* Debug */,
