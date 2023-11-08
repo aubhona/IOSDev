@@ -61,6 +61,7 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         static let colorPickerCornerWidth: Double = 75
         static let colorPickerCornerBottom: Double = 10
         static let colorPickerCornerLeft: Double = 20
+        static let colorPickerText: String = "Select"
         
         static let wishButtonHeight: Double = 35
         static let wishButtonCornerRadius: Double = 15
@@ -75,8 +76,8 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     private var descrptionLabel : UILabel = UILabel()
     private var slidersStack: UIStackView = UIStackView()
     private var switchesStack: UIStackView = UIStackView()
-    private var randomColorButton : UIButton = UIButton()
-    private var colorPickerButton : UIButton = UIButton()
+    private var randomColorButton : UIButton = UIButton(type: .system)
+    private var colorPickerButton : UIButton = UIButton(type: .system)
     private var backgroundColorChanged : (() -> (Void))?
     private var addWishButton: UIButton = UIButton(type: .system)
     
@@ -231,6 +232,7 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     // MARK: - Configure add wish button
     private func configureAddWishButton() {
         view.addSubview(addWishButton)
+        
         addWishButton.setHeight(Constants.wishButtonHeight)
         addWishButton.pinBottom(to: view, Constants.wishButtonBottom)
         addWishButton.pinHorizontal(to: view, Constants.wishButtonSide)
@@ -245,7 +247,6 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     
     @objc func addWishButtonPressed() {
         present(WishStoringViewController(), animated: true)
-        
     }
     
     // MARK: - Configure button random color
@@ -270,8 +271,9 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     
     // MARK: - Configure color picker button
     private func configureColorPickerButton() {
-        colorPickerButton.setTitle("Select", for: .normal)
+        colorPickerButton.setTitle(Constants.colorPickerText, for: .normal)
         colorPickerButton.backgroundColor = .blue
+        colorPickerButton.setTitleColor(.white, for: .normal)
         colorPickerButton.layer.cornerRadius = Constants.colorPickerCornerRadius
         colorPickerButton.addTarget(self, action: #selector(colorButtonTapped), for: .touchUpInside)
         

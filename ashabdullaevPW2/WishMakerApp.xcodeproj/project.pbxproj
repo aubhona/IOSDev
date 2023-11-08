@@ -17,6 +17,7 @@
 		01D443C42AD02C6F00A81F5E /* CustomSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D443C32AD02C6F00A81F5E /* CustomSwitch.swift */; };
 		01F761E82AEFCACB003F19EF /* WishStoringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F761E72AEFCACB003F19EF /* WishStoringViewController.swift */; };
 		01F761EA2AEFCE3F003F19EF /* WrittenWishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F761E92AEFCE3F003F19EF /* WrittenWishCell.swift */; };
+		01F761EC2AF17154003F19EF /* AddWishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F761EB2AF17154003F19EF /* AddWishCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		01D443C32AD02C6F00A81F5E /* CustomSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSwitch.swift; sourceTree = "<group>"; };
 		01F761E72AEFCACB003F19EF /* WishStoringViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishStoringViewController.swift; sourceTree = "<group>"; };
 		01F761E92AEFCE3F003F19EF /* WrittenWishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittenWishCell.swift; sourceTree = "<group>"; };
+		01F761EB2AF17154003F19EF /* AddWishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWishCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,9 +69,9 @@
 				0162E3A22AD0BAB700B1597C /* Extensions */,
 				0162E3A12AD0BA4A00B1597C /* CustomViews */,
 				0136E1D22ACC4F1900171788 /* WishMakerViewController.swift */,
+				01F761E72AEFCACB003F19EF /* WishStoringViewController.swift */,
 				0136E1BE2ACC47F600171788 /* AppDelegate.swift */,
 				0136E1C02ACC47F600171788 /* SceneDelegate.swift */,
-				01F761E72AEFCACB003F19EF /* WishStoringViewController.swift */,
 				0136E1C72ACC47F700171788 /* Assets.xcassets */,
 				0136E1CC2ACC47F700171788 /* Info.plist */,
 			);
@@ -82,6 +84,7 @@
 				01D443C32AD02C6F00A81F5E /* CustomSwitch.swift */,
 				0136E1D62ACC5F5B00171788 /* CustomSlider.swift */,
 				01F761E92AEFCE3F003F19EF /* WrittenWishCell.swift */,
+				01F761EB2AF17154003F19EF /* AddWishCell.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -172,6 +175,7 @@
 				0136E1C12ACC47F600171788 /* SceneDelegate.swift in Sources */,
 				01D443C42AD02C6F00A81F5E /* CustomSwitch.swift in Sources */,
 				0136E1D32ACC4F1900171788 /* WishMakerViewController.swift in Sources */,
+				01F761EC2AF17154003F19EF /* AddWishCell.swift in Sources */,
 				0136E1D52ACC5C4800171788 /* UIColorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
