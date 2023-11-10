@@ -31,6 +31,14 @@ final class AddWishCell: UITableViewCell {
     private let wishText: UITextView = UITextView()
     private let addWishButton: UIButton = UIButton(type: .system)
     private var addWish: ((String) -> ())?
+    public var wishContent : String {
+        get {
+            wishText.text
+        }
+        set (newText) {
+            wishText.text = newText
+        }
+    }
     
     // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -76,14 +84,12 @@ final class AddWishCell: UITableViewCell {
         addWishButton.setWidth(Constants.addWishButtonWidth)
         addWishButton.setHeight(Constants.addWishButtonHeight)
         addWishButton.addTarget(self, action: #selector(addWishButtonTapped), for: .touchUpInside)
+        
+        
     }
     
     @objc func addWishButtonTapped() {
-        print("a")
-        if (!wishText.hasText) {
-            return;
-        }
-        
         addWish?(wishText.text)
+        wishText.text = String()
     }
 }
