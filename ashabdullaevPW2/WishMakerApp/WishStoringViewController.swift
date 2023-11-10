@@ -28,6 +28,8 @@ final class WishStoringViewController: UIViewController {
         static let addWishSectionIndex: Int = 0;
         static let addWishSectionHeaderTitle: String = "Write, edit, delete your wish:"
         
+        static let writtenWishSectionIndex: Int = 1;
+        
         static let wishSectionHeaderTitle: String = "Your wishes:"
         
         static let wishesKey: String = "WishArrayKey"
@@ -39,7 +41,7 @@ final class WishStoringViewController: UIViewController {
     private var wishArray: [String] = []
     private var wishSelected: ((IndexPath) -> ())?
     private var lastSelectedWish: IndexPath?
-    private var closeButton = UIButton(type: .custom)
+    private var closeButton: UIButton = UIButton(type: .custom)
     
     // MARK: - Configure
     override func viewDidLoad() {
@@ -91,8 +93,9 @@ extension WishStoringViewController: UITableViewDataSource {
         if section == Constants.addWishSectionIndex {
             return Constants.addWishCellAmount;
         }
-        
-        return wishArray.count
+        print("Compare size")
+        print(wishArray.count == CoreDataManager.shared.fetchWish().count)
+        return CoreDataManager.shared.fetchWish().count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -103,13 +106,13 @@ extension WishStoringViewController: UITableViewDataSource {
             
             addWishCell.configure(action: {[weak self] wish in
                 if wish.isEmpty {
-                    return;
+                    return
                 }
                 self?.wishArray.append(wish)
+                CoreDataManager.shared.createWish(id: self?.wishTable.numberOfRows(inSection: Constants.writtenWishSectionIndex) ?? Int(), wishText: wish)
                 self?.wishTable.reloadData()
                 self?.defaults.set(self?.wishArray, forKey: Constants.wishesKey)
             })
-            
             wishSelected = {[weak addWishCell, weak self] indexPath in
                 addWishCell?.textViewDidBeginEditing(UITextView())
                 if self?.lastSelectedWish == nil {
@@ -120,27 +123,38 @@ extension WishStoringViewController: UITableViewDataSource {
                 addWishCell?.wishContent = cell.wishText;
                 addWishCell?.configure(action: {[weak self, indexPath] wish in
                     if self?.lastSelectedWish == nil {
+                        if wish.isEmpty {
+                            return
+                        }
+                        self?.wishArray.append(wish)
+                        CoreDataManager.shared.createWish(id: self?.wishTable.numberOfRows(inSection: Constants.writtenWishSectionIndex) ?? Int(), wishText: wish)
+                        self?.wishTable.reloadData()
+                        self?.defaults.set(self?.wishArray, forKey: Constants.wishesKey)
                         return
                     }
                     if wish.isEmpty {
                         self?.wishArray.remove(at: indexPath.row)
+                        CoreDataManager.shared.deleteWish(id: indexPath.row)
                     } else {
                         self?.wishArray[indexPath.row] = wish
+                        CoreDataManager.shared.updateWish(id: indexPath.row, newWishText: wish)
                     }
                     self?.lastSelectedWish = nil;
                     self?.wishTable.deselectRow(at: indexPath, animated: true)
                     self?.wishTable.reloadData()
-                    self?.defaults.set(self?.wishArray, forKey: Constants.wishesKey)})
+                    self?.defaults.set(self?.wishArray, forKey: Constants.wishesKey)
+                })
             }
             return addWishCell
         }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: WrittenWishCell.reuseId, for: indexPath)
-        
         guard let wishCell = cell as? WrittenWishCell else { return cell }
         
         wishCell.configure(with: wishArray[indexPath.row])
-        
+        wishCell.configure(with: CoreDataManager.shared.fetchWish(id: indexPath.row)?.text ?? String())
+        print("Compare element")
+        print(wishArray[indexPath.row] == (CoreDataManager.shared.fetchWish(id: indexPath.row)?.text ?? String()))
         return wishCell
     }
     

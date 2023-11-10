@@ -14,6 +14,8 @@
 		0136E1D52ACC5C4800171788 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0136E1D42ACC5C4800171788 /* UIColorExtension.swift */; };
 		0136E1D72ACC5F5B00171788 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0136E1D62ACC5F5B00171788 /* CustomSlider.swift */; };
 		0163C54D2ACD6B7B000C5665 /* UIViewPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0163C54C2ACD6B7B000C5665 /* UIViewPin.swift */; };
+		01708CFE2AFEBF6A00F67FB6 /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01708CFD2AFEBF6A00F67FB6 /* Wish.swift */; };
+		01708D012AFEC13600F67FB6 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01708D002AFEC13600F67FB6 /* CoreDataManager.swift */; };
 		01D443C42AD02C6F00A81F5E /* CustomSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D443C32AD02C6F00A81F5E /* CustomSwitch.swift */; };
 		01F761E82AEFCACB003F19EF /* WishStoringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F761E72AEFCACB003F19EF /* WishStoringViewController.swift */; };
 		01F761EA2AEFCE3F003F19EF /* WrittenWishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F761E92AEFCE3F003F19EF /* WrittenWishCell.swift */; };
@@ -30,6 +32,8 @@
 		0136E1D42ACC5C4800171788 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		0136E1D62ACC5F5B00171788 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		0163C54C2ACD6B7B000C5665 /* UIViewPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPin.swift; sourceTree = "<group>"; };
+		01708CFD2AFEBF6A00F67FB6 /* Wish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wish.swift; sourceTree = "<group>"; };
+		01708D002AFEC13600F67FB6 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		01D443C32AD02C6F00A81F5E /* CustomSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSwitch.swift; sourceTree = "<group>"; };
 		01F761E72AEFCACB003F19EF /* WishStoringViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishStoringViewController.swift; sourceTree = "<group>"; };
 		01F761E92AEFCE3F003F19EF /* WrittenWishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittenWishCell.swift; sourceTree = "<group>"; };
@@ -66,6 +70,7 @@
 		0136E1BD2ACC47F600171788 /* WishMakerApp */ = {
 			isa = PBXGroup;
 			children = (
+				01708CFF2AFEBFA200F67FB6 /* Entity */,
 				0162E3A22AD0BAB700B1597C /* Extensions */,
 				0162E3A12AD0BA4A00B1597C /* CustomViews */,
 				0136E1D22ACC4F1900171788 /* WishMakerViewController.swift */,
@@ -96,6 +101,15 @@
 				0163C54C2ACD6B7B000C5665 /* UIViewPin.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		01708CFF2AFEBFA200F67FB6 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				01708D002AFEC13600F67FB6 /* CoreDataManager.swift */,
+				01708CFD2AFEBF6A00F67FB6 /* Wish.swift */,
+			);
+			path = Entity;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,10 +182,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				0163C54D2ACD6B7B000C5665 /* UIViewPin.swift in Sources */,
+				01708CFE2AFEBF6A00F67FB6 /* Wish.swift in Sources */,
 				0136E1BF2ACC47F600171788 /* AppDelegate.swift in Sources */,
 				01F761E82AEFCACB003F19EF /* WishStoringViewController.swift in Sources */,
 				0136E1D72ACC5F5B00171788 /* CustomSlider.swift in Sources */,
 				01F761EA2AEFCE3F003F19EF /* WrittenWishCell.swift in Sources */,
+				01708D012AFEC13600F67FB6 /* CoreDataManager.swift in Sources */,
 				0136E1C12ACC47F600171788 /* SceneDelegate.swift in Sources */,
 				01D443C42AD02C6F00A81F5E /* CustomSwitch.swift in Sources */,
 				0136E1D32ACC4F1900171788 /* WishMakerViewController.swift in Sources */,
