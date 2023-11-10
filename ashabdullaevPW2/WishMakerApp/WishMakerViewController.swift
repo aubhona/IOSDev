@@ -46,21 +46,21 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         static let slidersHiddenSwitchText: String = "Sliders"
         static let alphaHiddenSwitchText: String = "Alpha"
         
-        static let switchesStackWidth: Double = 75
-        static let switchesStackLeft: Double = 25
+        static let switchesStackWidth: Double = 150
+        static let switchesStackLeft: Double = 0
         
         static let animationDuration: Double = 0.45
         
         static let randomColorButtonText: String = "Random"
         static let randomColorButtonCornerRadius: Double = 10
-        static let randomColorButtonLeft: Double = 20
+        static let randomColorButtonLeft: Double = 10
         static let randomColorButtonBottom: Double = 10
         static let randomColorButtonWidth: Double = 75
         
         static let colorPickerCornerRadius: Double = 10
         static let colorPickerCornerWidth: Double = 75
         static let colorPickerCornerBottom: Double = 10
-        static let colorPickerCornerLeft: Double = 20
+        static let colorPickerCornerLeft: Double = 15
         static let colorPickerText: String = "Select"
         
         static let wishButtonHeight: Double = 35
@@ -179,7 +179,7 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     private func configureSwitches(){
         switchesStack.layer.cornerRadius = Constants.stackRadius
         switchesStack.clipsToBounds = true
-        switchesStack.axis = .vertical
+        switchesStack.axis = .horizontal
         
         view.addSubview(switchesStack)
         

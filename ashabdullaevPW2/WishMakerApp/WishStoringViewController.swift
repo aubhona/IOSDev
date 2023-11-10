@@ -53,6 +53,7 @@ final class WishStoringViewController: UIViewController {
         wishArray = defaults.array(forKey: Constants.wishesKey) as? [String] ?? [];
     }
     
+    // MARK: - Configure table
     private func configureTable() {
         view.addSubview(wishTable)
         
@@ -67,6 +68,7 @@ final class WishStoringViewController: UIViewController {
         wishTable.register(AddWishCell.self, forCellReuseIdentifier: AddWishCell.reuseId)
     }
     
+    // MARK: - Configure close button
     private func configureCloseButton() {
         view.addSubview(closeButton)
         
