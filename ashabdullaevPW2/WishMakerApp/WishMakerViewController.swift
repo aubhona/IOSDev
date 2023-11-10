@@ -11,16 +11,16 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     // MARK: - Constants
     enum Constants {
         static let titleText: String = "WishMaker"
-        static let titleBackgroundColor = "#FFFFF0"
+        static let titleBackgroundColor: UIColor = UIColor("#FFFFF0")
         static let titleFontSize: CGFloat = 32
         static let titleTop: CGFloat = 30
         
         static let descriptionText: String = "This app will bring your joy and will fulfill three of your wishes!\n\t- The first is to change the background color."
-        static let descriptionColor : String = "#E5FCC2"
-        static let descriptionLeft : CGFloat = 20
-        static let descriptionTop : CGFloat = 20
-        static let descriptionFontSize : CGFloat = 16
-        static let descriptionNumberOfLines : Int = 0
+        static let descriptionColor: UIColor = UIColor("#E5FCC2")
+        static let descriptionLeft: CGFloat = 20
+        static let descriptionTop: CGFloat = 20
+        static let descriptionFontSize: CGFloat = 16
+        static let descriptionNumberOfLines: Int = 0
         
         static let sliderMin: Double = 0
         static let sliderMax: Double = 1
@@ -68,10 +68,12 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         static let wishButtonBottom: Double = 50
         static let wishButtonSide: Double = 25
         static let wishButtonText: String = "My wishes"
+        static let wishButtonBackgroundColor: UIColor = UIColor("#AED6F1")
+        static let wishButtonTitleColor: UIColor = .black
         
     }
     
-    // MARK: - Views
+    // MARK: - Fields
     private var titleLabel: UILabel = UILabel()
     private var descrptionLabel : UILabel = UILabel()
     private var slidersStack: UIStackView = UIStackView()
@@ -81,6 +83,7 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     private var backgroundColorChanged : (() -> (Void))?
     private var addWishButton: UIButton = UIButton(type: .system)
     
+    // MARK: - Configure main view
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -100,7 +103,7 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     private func configureTitle() {
         titleLabel.text = Constants.titleText
         titleLabel.font = UIFont.boldSystemFont(ofSize: Constants.titleFontSize)
-        titleLabel.textColor = UIColor(Constants.titleBackgroundColor);
+        titleLabel.textColor = Constants.titleBackgroundColor;
         
         view.addSubview(titleLabel)
         
@@ -112,7 +115,7 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     private func configureDescription() {
         descrptionLabel.text = Constants.descriptionText
         descrptionLabel.font = UIFont.boldSystemFont(ofSize: Constants.descriptionFontSize)
-        descrptionLabel.textColor = UIColor(Constants.descriptionColor);
+        descrptionLabel.textColor = Constants.descriptionColor;
         descrptionLabel.numberOfLines = Constants.descriptionNumberOfLines
         
         view.addSubview(descrptionLabel)
@@ -237,8 +240,8 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         addWishButton.pinBottom(to: view, Constants.wishButtonBottom)
         addWishButton.pinHorizontal(to: view, Constants.wishButtonSide)
         
-        addWishButton.backgroundColor = .white
-        addWishButton.setTitleColor(.systemPink, for: .normal)
+        addWishButton.backgroundColor = Constants.wishButtonBackgroundColor
+        addWishButton.setTitleColor(Constants.wishButtonTitleColor, for: .normal)
         addWishButton.setTitle(Constants.wishButtonText, for: .normal)
         
         addWishButton.layer.cornerRadius = Constants.wishButtonCornerRadius
@@ -246,7 +249,11 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     }
     
     @objc func addWishButtonPressed() {
-        present(WishStoringViewController(), animated: true)
+        let wishStore = WishStoringViewController()
+        wishStore.modalPresentationStyle = .pageSheet
+        wishStore.isModalInPresentation = false
+        present(wishStore, animated: true, completion: nil)
+        
     }
     
     // MARK: - Configure button random color

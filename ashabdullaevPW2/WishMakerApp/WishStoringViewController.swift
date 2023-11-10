@@ -10,15 +10,25 @@ import UIKit
 final class WishStoringViewController: UIViewController {
     // MARK: - Constants
     enum Constants {
-        static let wishTableCornerRadius: Double = 15
-        static let wishTableOffset: Double = 30
+        static let viewBackgroundColor: UIColor = UIColor("#B2DFDB")
+        
+        static let wishTableCornerRadius: Double = 20
+        static let wishTableOffset: Double = 20
         static let wishTableNumberOfSection: Int = 2;
+        static let wishTableBackgroundColor: UIColor = UIColor("#B2DFDB");
+        static let wishTableSeparatorStyle: UITableViewCell.SeparatorStyle = .none;
+        
+        static let closeButtonImage: UIImage = UIImage(named: "CloseButton") ?? UIImage()
+        static let closeButtonTop: Double = 3
+        static let closeButtonLeft: Double = 3
+        static let closeButtonWidth: Double = 27
+        static let closeButtonHeight: Double = 27
         
         static let addWishCellAmount: Int = 1;
         static let addWishSectionIndex: Int = 0;
-        static let addWishSectionHeaderTitle: String = "Напишите своё желание: "
+        static let addWishSectionHeaderTitle: String = "Write, edit, delete your wish:"
         
-        static let wishSectionHeaderTitle: String = "Ваши желания: "
+        static let wishSectionHeaderTitle: String = "Your wishes:"
         
         static let wishesKey: String = "WishArrayKey"
     }
@@ -26,14 +36,19 @@ final class WishStoringViewController: UIViewController {
     // MARK: - Fields
     private let defaults = UserDefaults.standard
     private var wishTable: UITableView = UITableView(frame: .zero)
-    private var wishArray: [String] = ["I wish to add cells to the table"]
+    private var wishArray: [String] = []
     private var wishSelected: ((IndexPath) -> ())?
     private var lastSelectedWish: IndexPath?
+    private var closeButton = UIButton(type: .custom)
     
     // MARK: - Configure
     override func viewDidLoad() {
-        view.backgroundColor = .blue
+        super.viewDidLoad()
+        
+        view.backgroundColor = Constants.viewBackgroundColor
+        
         configureTable()
+        configureCloseButton()
         
         wishArray = defaults.array(forKey: Constants.wishesKey) as? [String] ?? [];
     }
@@ -41,15 +56,30 @@ final class WishStoringViewController: UIViewController {
     private func configureTable() {
         view.addSubview(wishTable)
         
-        wishTable.backgroundColor = .red
+        wishTable.backgroundColor = Constants.wishTableBackgroundColor
         wishTable.dataSource = self
         wishTable.delegate = self
-        wishTable.separatorStyle = .none
+        wishTable.separatorStyle = Constants.wishTableSeparatorStyle
         wishTable.layer.cornerRadius = Constants.wishTableCornerRadius
         
         wishTable.pin(to: view, Constants.wishTableOffset)
         wishTable.register(WrittenWishCell.self, forCellReuseIdentifier: WrittenWishCell.reuseId)
         wishTable.register(AddWishCell.self, forCellReuseIdentifier: AddWishCell.reuseId)
+    }
+    
+    private func configureCloseButton() {
+        view.addSubview(closeButton)
+        
+        closeButton.setImage(Constants.closeButtonImage, for: .normal)
+        closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
+        closeButton.pinTop(to: view, Constants.closeButtonTop)
+        closeButton.pinLeft(to: view, Constants.closeButtonLeft)
+        closeButton.setWidth(Constants.closeButtonWidth)
+        closeButton.setHeight(Constants.closeButtonHeight)
+    }
+    
+    @objc func closeTapped() {
+        dismiss(animated: true)
     }
 }
 
@@ -79,6 +109,7 @@ extension WishStoringViewController: UITableViewDataSource {
             })
             
             wishSelected = {[weak addWishCell, weak self] indexPath in
+                addWishCell?.textViewDidBeginEditing(UITextView())
                 if self?.lastSelectedWish == nil {
                     addWishCell?.wishContent = String()
                     return

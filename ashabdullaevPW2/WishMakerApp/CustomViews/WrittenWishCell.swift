@@ -12,9 +12,10 @@ final class WrittenWishCell: UITableViewCell {
     
     // MARK: - Constants
     private enum Constants {
-        static let cellBackgroundColor : UIColor = .clear
+        static let cellBackgroundColor: UIColor = .clear
         
-        static let selectedColor : UIColor = .blue
+        static let selectedColor: UIColor = UIColor("#58D68D")
+        static let selectedCornerRadius: CGFloat = 20
         
         static let wrapColor: UIColor = .white
         static let wrapRadius: CGFloat = 16
@@ -47,6 +48,7 @@ final class WrittenWishCell: UITableViewCell {
     private func configureUI() {
         let backgroundView = UIView()
         backgroundView.backgroundColor = Constants.selectedColor
+        backgroundView.layer.cornerRadius = Constants.selectedCornerRadius
         selectedBackgroundView = backgroundView
         backgroundColor = Constants.cellBackgroundColor
         
