@@ -1,11 +1,9 @@
 //
 //  WishEventCreationView.swift
-//  mebelikovaPW2
+//  WishMakerApp
 //
-//  Created by Мария Беликова on 28.01.2024.
+//  Created by Aubkhon Abdullaev on 07.02.2024.
 //
-
-import UIKit
 
 import UIKit
 
@@ -13,28 +11,21 @@ class WishEventCreationView: UIViewController {
     // MARK: - Constants
     enum Constants {
         static let viewBackgroundColor: UIColor = UIColor("#B2DFDB")
-        
-        static let wishTableCornerRadius: Double = 20
-        static let wishTableOffset: Double = 20
-        static let wishTableNumberOfSection: Int = 2;
-        static let wishTableBackgroundColor: UIColor = UIColor("#B2DFDB");
-        static let wishTableSeparatorStyle: UITableViewCell.SeparatorStyle = .none;
-        
+        static let cornerRadius: CGFloat = 20.0
+        static let stackTopOffset: CGFloat = 40.0
+        static let offset: CGFloat = 10.0
+        static let numberOfSections: Int = 2
+        static let backgroundColor: UIColor = UIColor("#B2DFDB")
+        static let separatorStyle: UITableViewCell.SeparatorStyle = .none
         static let closeButtonImage: UIImage = UIImage(named: "CloseButton") ?? UIImage()
-        static let closeButtonTop: Double = 3
-        static let closeButtonLeft: Double = 3
-        static let closeButtonWidth: Double = 27
-        static let closeButtonHeight: Double = 27
-        
-        static let addWishCellAmount: Int = 1;
-        static let addWishSectionIndex: Int = 0;
-        static let addWishSectionHeaderTitle: String = "Write, edit, delete your wish:"
-        
-        static let writtenWishSectionIndex: Int = 1;
-        
-        static let wishSectionHeaderTitle: String = "Your wishes:"
-        
-        static let wishesKey: String = "WishArrayKey"
+        static let closeButtonTop: CGFloat = 3.0
+        static let closeButtonLeft: CGFloat = 3.0
+        static let closeButtonWidth: CGFloat = 27.0
+        static let closeButtonHeight: CGFloat = 27.0
+        static let buttonBackgroundColor: UIColor = .blue
+        static let buttonHeight: CGFloat = 40.0
+        static let labelTextColor: UIColor = .white
+        static let labelFontSize: CGFloat = 16.0
     }
     
     // MARK: - UI elements
@@ -44,16 +35,19 @@ class WishEventCreationView: UIViewController {
     private let endDatePicker = UIDatePicker()
     private var closeButton: UIButton = UIButton(type: .custom)
     private var saveButton: UIButton = UIButton(type: .custom)
+    private var startDate: Date = Date()
+    private var endDate: Date = Date()
+    private var inputStack: UIStackView = UIStackView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
     }
     
+    // MARK: - Configure input UI
     private func configureUI() {
         view.backgroundColor = Constants.viewBackgroundColor
         
-        // Создание меток
         let titleLabel = createLabel(withText: "Event Title:")
         let descriptionLabel = createLabel(withText: "Event Description:")
         let startDateLabel = createLabel(withText: "Start Date:")
@@ -65,27 +59,23 @@ class WishEventCreationView: UIViewController {
         configureDatePicker(startDatePicker, selector: #selector(startDateChanged(_:)))
         configureDatePicker(endDatePicker, selector: #selector(endDateChanged(_:)))
         
-        // Добавляем метки и поля в stackView
-        let stackView = UIStackView(arrangedSubviews: [
+        inputStack = UIStackView(arrangedSubviews: [
             titleLabel, titleTextField,
             descriptionLabel, descriptionTextField,
             startDateLabel, startDatePicker,
             endDateLabel, endDatePicker
         ])
         
-        stackView.axis = .vertical
-        stackView.spacing = 10
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stackView)
+        inputStack.axis = .vertical
+        inputStack.spacing = Constants.offset
+        inputStack.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(inputStack)
         
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
+        inputStack.pinTop(to: view.safeAreaLayoutGuide.topAnchor, Constants.stackTopOffset)
+        inputStack.pinHorizontal(to: view, Constants.offset)
         
         configureCloseButton()
-        configureSaveButton() // Добавление кнопки сохранения
+        configureSaveButton()
     }
     
     private func configureTextField(_ textField: UITextField, placeholder: String) {
@@ -104,20 +94,17 @@ class WishEventCreationView: UIViewController {
     private func createLabel(withText text: String) -> UILabel {
         let label = UILabel()
         label.text = text
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = Constants.labelTextColor
+        label.font = UIFont.systemFont(ofSize: Constants.labelFontSize)
         return label
     }
     
     @objc private func startDateChanged(_ sender: UIDatePicker) {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        print("Start Date: \(formatter.string(from: sender.date))")
+        startDate = sender.date
     }
     
     @objc private func endDateChanged(_ sender: UIDatePicker) {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        print("End Date: \(formatter.string(from: sender.date))")
+        endDate = sender.date
     }
     
     // MARK: - Configure close button
@@ -132,7 +119,7 @@ class WishEventCreationView: UIViewController {
         closeButton.setHeight(Constants.closeButtonHeight)
     }
     
-    @objc func closeTapped() {
+    @objc private func closeTapped() {
         dismiss(animated: true)
     }
     
@@ -141,22 +128,17 @@ class WishEventCreationView: UIViewController {
         view.addSubview(saveButton)
         
         saveButton.setTitle("Save", for: .normal)
-        saveButton.backgroundColor = .blue // Установите цвет кнопки по вашему желанию
-        saveButton.layer.cornerRadius = Constants.wishTableCornerRadius
+        saveButton.backgroundColor = Constants.buttonBackgroundColor
+        saveButton.layer.cornerRadius = Constants.cornerRadius
         saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
         
-        // Установка констрейнтов для кнопки сохранения
-        saveButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            saveButton.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: 20),
-            saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            saveButton.heightAnchor.constraint(equalToConstant: 40) // Высота кнопки
-        ])
+        saveButton.pinTop(to: inputStack.bottomAnchor, Constants.offset)
+        saveButton.pinHorizontal(to: view, Constants.offset)
+        saveButton.setHeight(Constants.buttonHeight)
     }
     
-    @objc func saveTapped() {
+    @objc private func saveTapped() {
         // Обработка нажатия на кнопку сохранения
     }
-    
 }
+
