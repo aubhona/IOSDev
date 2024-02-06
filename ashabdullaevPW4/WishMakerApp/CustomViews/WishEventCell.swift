@@ -10,7 +10,7 @@ final class WishEventCell: UICollectionViewCell {
     private enum Constants {
         static let cellCornerRadius: CGFloat = 12
         static let cellMargin: CGFloat = 16
-        static let cellBackgroundColor: UIColor = .white
+        static let cellBackgroundColor: UIColor = .clear
         
         static let titleFont: UIFont = .boldSystemFont(ofSize: 18)
         static let titleColor: UIColor = .darkGray
@@ -26,7 +26,7 @@ final class WishEventCell: UICollectionViewCell {
         static let shadowOffset: CGSize = CGSize(width: 3, height: 3)
         static let shadowColor: CGColor = UIColor.black.cgColor
         
-        static let wrapColor: UIColor = .white
+        static let wrapColor: UIColor = .clear
         static let wrapCornerRadius: CGFloat = 12
         static let wrapBorderWidth: CGFloat = 1
         static let wrapBorderColor: CGColor = UIColor.lightGray.cgColor
@@ -81,6 +81,7 @@ final class WishEventCell: UICollectionViewCell {
     
     private func setupWrapView() {
         contentView.addSubview(wrapView)
+        backgroundColor = Constants.wrapColor
         wrapView.backgroundColor = Constants.wrapColor
         wrapView.layer.cornerRadius = Constants.wrapCornerRadius
         wrapView.layer.borderWidth = Constants.wrapBorderWidth

@@ -30,7 +30,7 @@ final class WishCalendarViewController: UIViewController {
     private func configureCollection() {
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = view.backgroundColor
         collectionView.alwaysBounceVertical = true
         collectionView.showsVerticalScrollIndicator = false
         collectionView.contentInset = Constants.contentInset
