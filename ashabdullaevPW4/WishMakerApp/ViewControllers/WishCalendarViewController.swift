@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 final class WishCalendarViewController: UIViewController {
     // MARK: - Constants
@@ -16,8 +17,9 @@ final class WishCalendarViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .purple
+        view.backgroundColor = WishMakerViewController.backColor
         configureCollection()
+        configureAddButton()
     }
     
     private let collectionView: UICollectionView = UICollectionView(
@@ -54,15 +56,15 @@ final class WishCalendarViewController: UIViewController {
     // MARK: - Add Button Configuration
     private func configureAddButton() {
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addWishEventTapped))
-        navigationItem.rightBarButtonItem = addButton
+        self.navigationItem.rightBarButtonItem = addButton 
     }
 
+    
     @objc private func addWishEventTapped() {
-        // Present WishEventCreationView when the plus button is tapped
-        let creationView = WishEventCreationView()
-        let navigationController = UINavigationController(rootViewController: creationView)
-        navigationController.modalPresentationStyle = .fullScreen // or .formSheet for iPad
-        present(navigationController, animated: true)
+        let wishStore = WishEventCreationView()
+        wishStore.modalPresentationStyle = .pageSheet
+        wishStore.isModalInPresentation = false
+        present(wishStore, animated: true, completion: nil)
     }
 }
 
@@ -86,18 +88,15 @@ extension WishCalendarViewController: UICollectionViewDataSource {
         guard let wishEventCell = cell as? WishEventCell else {
             return cell
         }
-        if #available(iOS 15.0, *) {
-            wishEventCell.configure(
-                with: WishEventModel(
-                    title: "Test",
-                    description: "Test description",
-                    startDate: Date(),
-                    endDate: Date()
-                )
-            )
-        } else {
-            // Fallback on earlier versions
-        }
+        
+        
+        let wishEvent = WishEventModel(title: "Test", descriptionText: "Test description", startDate: Date(), endDate: Date())
+        
+        wishEventCell.configure(
+            with: wishEvent
+            
+        )
+        
         return cell
     }
 }
@@ -111,7 +110,7 @@ extension WishCalendarViewController: UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         // TODO: Adjust cell size as needed
-        return CGSize(width: collectionView.bounds.width - 10, height: 100)
+        return CGSize(width: collectionView.bounds.width - 10, height: 150)
     }
     
     func collectionView(

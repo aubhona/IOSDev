@@ -5,11 +5,11 @@
 //  Created by Aubkhon Abdullaev on 07.02.2024.
 //
 
-import UIKit
+import CoreData
 
-struct WishEventModel : Codable {
-    var title: String
-    var description: String
+public struct WishEventModel  {
+    var title: String = ""
+    var descriptionText: String = ""
     var startDate: Date
     var endDate: Date
 }

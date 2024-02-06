@@ -8,6 +8,8 @@
 import UIKit
 
 final class WishMakerViewController: UIViewController, UIColorPickerViewControllerDelegate {
+    public static var backColor: UIColor = .black
+    
     // MARK: - Constants
     enum Constants {
         static let titleText: String = "WishMaker"
@@ -164,9 +166,6 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
             slider.backgroundColor = view.backgroundColor
             slider.valueChanged = { [weak self] in
                 self?.view.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: CGFloat(sliderAlpha.slider.value))
-                for button in (self?.actionStack ?? UIStackView()).arrangedSubviews {
-                    (button as? UIButton)?.setTitleColor(UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: CGFloat(sliderAlpha.slider.value)), for: .normal)
-                }
             }
         }
         
@@ -175,6 +174,10 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
             sliderGreen?.slider.value = Float(self?.view.backgroundColor?.cgColor.components?[Constants.greenSliderInd] ?? 0)
             sliderBlue?.slider.value = Float(self?.view.backgroundColor?.cgColor.components?[Constants.blueSliderInd] ?? 0)
             sliderAlpha?.slider.value = Float(self?.view.backgroundColor?.cgColor.components?[Constants.alphaSliderInd] ?? 1)
+            for button in (self?.actionStack ?? UIStackView()).arrangedSubviews {
+                (button as? UIButton)?.setTitleColor(self?.view.backgroundColor ?? .black, for: .normal)
+            }
+            WishMakerViewController.backColor = self?.view.backgroundColor ?? .black
         }
         
         slidersStack.pinCenterX(to: view)
@@ -345,9 +348,6 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     @available(iOS 14.0, *)
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         view.backgroundColor = viewController.selectedColor
-        for button in actionStack.arrangedSubviews {
-            (button as? UIButton)?.setTitleColor(view.backgroundColor, for: .normal)
-        }
         backgroundColorChanged?()
         viewController.dismiss(animated: true)
     }
@@ -355,9 +355,6 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     @available(iOS 14.0, *)
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
         view.backgroundColor = viewController.selectedColor
-        for button in actionStack.arrangedSubviews {
-            (button as? UIButton)?.setTitleColor(view.backgroundColor, for: .normal)
-        }
         backgroundColorChanged?()
     }
     

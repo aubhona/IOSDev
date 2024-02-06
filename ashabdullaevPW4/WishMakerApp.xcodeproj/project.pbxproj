@@ -91,8 +91,7 @@
 		0136E1BD2ACC47F600171788 /* WishMakerApp */ = {
 			isa = PBXGroup;
 			children = (
-				01F9696D2B72C64E0040F755 /* CoreDataManager.swift */,
-				01F969792B72E0550040F755 /* CalendarEventManager.swift */,
+				01F9697B2B72E2CB0040F755 /* Managers */,
 				01F9696C2B72C64E0040F755 /* Entities */,
 				0162E3A22AD0BAB700B1597C /* Extensions */,
 				0162E3A12AD0BA4A00B1597C /* CustomViews */,
@@ -133,6 +132,15 @@
 				01F969752B72D66C0040F755 /* WishEventModel.swift */,
 			);
 			path = Entities;
+			sourceTree = "<group>";
+		};
+		01F9697B2B72E2CB0040F755 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				01F9696D2B72C64E0040F755 /* CoreDataManager.swift */,
+				01F969792B72E0550040F755 /* CalendarEventManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -11,14 +11,30 @@ final class WishEventCell: UICollectionViewCell {
         static let cellCornerRadius: CGFloat = 12
         static let cellMargin: CGFloat = 16
         static let cellBackgroundColor: UIColor = .white
+        
         static let titleFont: UIFont = .boldSystemFont(ofSize: 18)
-        static let descriptionFont: UIFont = .systemFont(ofSize: 14)
-        static let dateFont: UIFont = .italicSystemFont(ofSize: 12)
         static let titleColor: UIColor = .darkGray
+        
+        static let descriptionFont: UIFont = .systemFont(ofSize: 14)
         static let descriptionColor: UIColor = .gray
+        
+        static let dateFont: UIFont = .italicSystemFont(ofSize: 12)
         static let dateColor: UIColor = .lightGray
+        
+        static let shadowOpacity: Float = 0.1
+        static let shadowRadius: CGFloat = 10
+        static let shadowOffset: CGSize = CGSize(width: 3, height: 3)
+        static let shadowColor: CGColor = UIColor.black.cgColor
+        
+        static let wrapColor: UIColor = .white
+        static let wrapCornerRadius: CGFloat = 12
+        static let wrapBorderWidth: CGFloat = 1
+        static let wrapBorderColor: CGColor = UIColor.lightGray.cgColor
+        
+        static let elementVerticalSpacing: CGFloat = 8
     }
     
+    // MARK: - UI Elements
     private let wrapView: UIView = UIView()
     private let titleLabel: UILabel = UILabel()
     private let descriptionLabel: UILabel = UILabel()
@@ -36,22 +52,27 @@ final class WishEventCell: UICollectionViewCell {
         setupEndDateLabel()
     }
     
-    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Cell Configuration
-    @available(iOS 15.0, *)
     func configure(with event: WishEventModel) {
         titleLabel.text = event.title
-        descriptionLabel.text = event.description
-        startDateLabel.text = "Start: \(event.startDate.formatted())"
-        endDateLabel.text = "End: \(event.endDate.formatted())"
+        descriptionLabel.text = event.descriptionText
+        startDateLabel.text = "Start: \(formatDate(event.startDate))"
+        endDateLabel.text = "End: \(formatDate(event.endDate))"
         layoutIfNeeded()
     }
     
-    // MARK: - UI Setup
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter.string(from: date)
+    }
+    
+    // MARK: - UI Configuration
     private func setupCell() {
         contentView.layer.cornerRadius = Constants.cellCornerRadius
         contentView.backgroundColor = Constants.cellBackgroundColor
@@ -60,69 +81,47 @@ final class WishEventCell: UICollectionViewCell {
     
     private func setupWrapView() {
         contentView.addSubview(wrapView)
-        wrapView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            wrapView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.cellMargin),
-            wrapView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.cellMargin),
-            wrapView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.cellMargin),
-            wrapView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.cellMargin)
-        ])
-        
-        wrapView.layer.cornerRadius = Constants.cellCornerRadius
-        wrapView.backgroundColor = Constants.cellBackgroundColor
-        wrapView.clipsToBounds = true
+        wrapView.backgroundColor = Constants.wrapColor
+        wrapView.layer.cornerRadius = Constants.wrapCornerRadius
+        wrapView.layer.borderWidth = Constants.wrapBorderWidth
+        wrapView.layer.borderColor = Constants.wrapBorderColor
+        wrapView.layer.shadowOpacity = Constants.shadowOpacity
+        wrapView.layer.shadowRadius = Constants.shadowRadius
+        wrapView.layer.shadowOffset = Constants.shadowOffset
+        wrapView.layer.shadowColor = Constants.shadowColor
+        wrapView.pin(to: contentView, Constants.cellMargin)
+        wrapView.clipsToBounds = false
     }
     
     private func setupTitleLabel() {
         wrapView.addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: wrapView.topAnchor, constant: Constants.cellMargin),
-            titleLabel.leadingAnchor.constraint(equalTo: wrapView.leadingAnchor, constant: Constants.cellMargin),
-            titleLabel.trailingAnchor.constraint(equalTo: wrapView.trailingAnchor, constant: -Constants.cellMargin)
-        ])
-        
+        titleLabel.pinTop(to: wrapView, Constants.cellMargin)
+        titleLabel.pinHorizontal(to: wrapView, Constants.cellMargin)
         titleLabel.font = Constants.titleFont
         titleLabel.textColor = Constants.titleColor
     }
     
     private func setupDescriptionLabel() {
         wrapView.addSubview(descriptionLabel)
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: wrapView.leadingAnchor, constant: Constants.cellMargin),
-            descriptionLabel.trailingAnchor.constraint(equalTo: wrapView.trailingAnchor, constant: -Constants.cellMargin)
-        ])
-        
+        descriptionLabel.pinTop(to: titleLabel.bottomAnchor, Constants.elementVerticalSpacing)
+        descriptionLabel.pinHorizontal(to: wrapView, Constants.cellMargin)
         descriptionLabel.font = Constants.descriptionFont
         descriptionLabel.textColor = Constants.descriptionColor
-        descriptionLabel.numberOfLines = 0
+        descriptionLabel.numberOfLines = .zero
     }
     
     private func setupStartDateLabel() {
         wrapView.addSubview(startDateLabel)
-        startDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            startDateLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
-            startDateLabel.leadingAnchor.constraint(equalTo: wrapView.leadingAnchor, constant: Constants.cellMargin),
-            startDateLabel.trailingAnchor.constraint(equalTo: wrapView.trailingAnchor, constant: -Constants.cellMargin)
-        ])
-        
+        startDateLabel.pinTop(to: descriptionLabel.bottomAnchor, Constants.elementVerticalSpacing)
+        startDateLabel.pinHorizontal(to: wrapView, Constants.cellMargin)
         startDateLabel.font = Constants.dateFont
         startDateLabel.textColor = Constants.dateColor
     }
     
     private func setupEndDateLabel() {
         wrapView.addSubview(endDateLabel)
-        endDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            // Adjust this to position endDateLabel below startDateLabel
-            endDateLabel.topAnchor.constraint(equalTo: startDateLabel.bottomAnchor, constant: 8),
-            endDateLabel.leadingAnchor.constraint(equalTo: wrapView.leadingAnchor, constant: Constants.cellMargin),
-            endDateLabel.trailingAnchor.constraint(equalTo: wrapView.trailingAnchor, constant: -Constants.cellMargin)
-        ])
-        
+        endDateLabel.pinTop(to: startDateLabel.bottomAnchor, Constants.elementVerticalSpacing)
+        endDateLabel.pinHorizontal(to: wrapView, Constants.cellMargin)
         endDateLabel.font = Constants.dateFont
         endDateLabel.textColor = Constants.dateColor
     }
