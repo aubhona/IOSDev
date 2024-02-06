@@ -65,12 +65,21 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         
         static let wishButtonHeight: Double = 35
         static let wishButtonCornerRadius: Double = 15
-        static let wishButtonBottom: Double = 50
-        static let wishButtonSide: Double = 25
+        static let wishButtonBottom: Double = 45
+        static let wishButtonSide: Double = 0
         static let wishButtonText: String = "My wishes"
         static let wishButtonBackgroundColor: UIColor = UIColor("#AED6F1")
         static let wishButtonTitleColor: UIColor = .black
         
+        static let spacing: Double = 10
+        
+        static let scheduleWishButtonHeight: Double = 35
+        static let scheduleWishButtonCornerRadius: Double = 15
+        static let scheduleWishButtonBottom: Double = 0
+        static let scheduleWishButtonSide: Double = 0
+        static let scheduleWishButtonText: String = "Schedule wish granting"
+        static let scheduleWishButtonBackgroundColor: UIColor = UIColor("#AED6F1")
+        static let scheduleWishButtonTitleColor: UIColor = .black
     }
     
     // MARK: - Fields
@@ -81,7 +90,9 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     private var randomColorButton : UIButton = UIButton(type: .system)
     private var colorPickerButton : UIButton = UIButton(type: .system)
     private var backgroundColorChanged : (() -> (Void))?
+    private var actionStack: UIStackView = UIStackView()
     private var addWishButton: UIButton = UIButton(type: .system)
+    private var scheduleWishButton: UIButton = UIButton(type: .system)
     
     // MARK: - Configure main view
     override func viewDidLoad() {
@@ -92,7 +103,7 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     private func configureUI() {
         configureTitle()
         configureDescription()
-        configureAddWishButton()
+        configureActionStack()
         configureSliders()
         configureSwitches()
         configureButtonRandomColor()
@@ -153,6 +164,9 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
             slider.backgroundColor = view.backgroundColor
             slider.valueChanged = { [weak self] in
                 self?.view.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: CGFloat(sliderAlpha.slider.value))
+                for button in (self?.actionStack ?? UIStackView()).arrangedSubviews {
+                    (button as? UIButton)?.setTitleColor(UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: CGFloat(sliderAlpha.slider.value)), for: .normal)
+                }
             }
         }
         
@@ -232,13 +246,25 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         switchesStack.pinBottom(to: slidersStack.topAnchor)
     }
     
+    // MARK: - Configure action stack
+    private func configureActionStack() {
+        actionStack.axis = .vertical
+        view.addSubview(actionStack)
+        actionStack.spacing = Constants.spacing
+        for button in [addWishButton, scheduleWishButton] {
+            actionStack.addArrangedSubview(button)
+        }
+        configureScheduleMissions()
+        configureAddWishButton()
+        actionStack.pinBottom(to: view, Constants.stackBottom)
+        actionStack.pinHorizontal(to: view, Constants.stackLeading)
+    }
+    
     // MARK: - Configure add wish button
     private func configureAddWishButton() {
-        view.addSubview(addWishButton)
-        
         addWishButton.setHeight(Constants.wishButtonHeight)
-        addWishButton.pinBottom(to: view, Constants.wishButtonBottom)
-        addWishButton.pinHorizontal(to: view, Constants.wishButtonSide)
+        addWishButton.pinBottom(to: actionStack, Constants.wishButtonBottom)
+        addWishButton.pinHorizontal(to: actionStack, Constants.wishButtonSide)
         
         addWishButton.backgroundColor = Constants.wishButtonBackgroundColor
         addWishButton.setTitleColor(Constants.wishButtonTitleColor, for: .normal)
@@ -248,12 +274,33 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
         addWishButton.addTarget(self, action: #selector(addWishButtonPressed), for: .touchUpInside)
     }
     
+    
     @objc func addWishButtonPressed() {
         let wishStore = WishStoringViewController()
         wishStore.modalPresentationStyle = .pageSheet
         wishStore.isModalInPresentation = false
         present(wishStore, animated: true, completion: nil)
         
+    }
+    
+    // MARK: - Configure add wish button
+    private func configureScheduleMissions() {
+        scheduleWishButton.setHeight(Constants.scheduleWishButtonHeight)
+        scheduleWishButton.pinBottom(to: actionStack, Constants.scheduleWishButtonBottom)
+        scheduleWishButton.pinHorizontal(to: actionStack, Constants.scheduleWishButtonSide)
+        
+        scheduleWishButton.backgroundColor = Constants.scheduleWishButtonBackgroundColor
+        scheduleWishButton.setTitleColor(Constants.scheduleWishButtonTitleColor, for: .normal)
+        scheduleWishButton.setTitle(Constants.scheduleWishButtonText, for: .normal)
+        
+        scheduleWishButton.layer.cornerRadius = Constants.scheduleWishButtonCornerRadius
+        scheduleWishButton.addTarget(self, action: #selector(scheduleWishButtonPressed), for: .touchUpInside)
+    }
+    
+    
+    @objc func scheduleWishButtonPressed() {
+        let vc = WishCalendarViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     // MARK: - Configure button random color
@@ -273,6 +320,9 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     
     @objc func randomColorButtonTapped() {
         view.backgroundColor = UIColor(UIColor.generateRandomHexColor())
+        for button in actionStack.arrangedSubviews {
+            (button as? UIButton)?.setTitleColor(view.backgroundColor, for: .normal)
+        }
         backgroundColorChanged?()
     }
     
@@ -295,6 +345,9 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     @available(iOS 14.0, *)
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         view.backgroundColor = viewController.selectedColor
+        for button in actionStack.arrangedSubviews {
+            (button as? UIButton)?.setTitleColor(view.backgroundColor, for: .normal)
+        }
         backgroundColorChanged?()
         viewController.dismiss(animated: true)
     }
@@ -302,6 +355,9 @@ final class WishMakerViewController: UIViewController, UIColorPickerViewControll
     @available(iOS 14.0, *)
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
         view.backgroundColor = viewController.selectedColor
+        for button in actionStack.arrangedSubviews {
+            (button as? UIButton)?.setTitleColor(view.backgroundColor, for: .normal)
+        }
         backgroundColorChanged?()
     }
     
