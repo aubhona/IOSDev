@@ -7,7 +7,9 @@
 
 import UIKit
 
-class WishEventCreationView: UIViewController {
+final class WishEventCreationView: UIViewController {
+    private static var index: Int = CoreDataEventManager.shared.fetchWish().count
+    
     // MARK: - Constants
     enum Constants {
         static let viewBackgroundColor: UIColor = UIColor("#B2DFDB")
@@ -38,6 +40,7 @@ class WishEventCreationView: UIViewController {
     private var startDate: Date = Date()
     private var endDate: Date = Date()
     private var inputStack: UIStackView = UIStackView()
+    var onSave: ((WishEventModel) -> (Void))?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +49,7 @@ class WishEventCreationView: UIViewController {
     
     // MARK: - Configure input UI
     private func configureUI() {
-        view.backgroundColor = Constants.viewBackgroundColor
+        view.backgroundColor = WishMakerViewController.backColor.withAlphaComponent(1)
         
         let titleLabel = createLabel(withText: "Event Title:")
         let descriptionLabel = createLabel(withText: "Event Description:")
@@ -87,6 +90,7 @@ class WishEventCreationView: UIViewController {
         if #available(iOS 13.4, *) {
             datePicker.preferredDatePickerStyle = .wheels
         }
+        datePicker.backgroundColor = .white
         datePicker.datePickerMode = .date
         datePicker.addTarget(self, action: selector, for: .valueChanged)
     }
@@ -138,7 +142,15 @@ class WishEventCreationView: UIViewController {
     }
     
     @objc private func saveTapped() {
-        // Обработка нажатия на кнопку сохранения
+        if (titleTextField.text == nil || descriptionTextField.text == nil) {
+            return
+        }
+        guard let event = CoreDataEventManager.shared.createWish(id: WishEventCreationView.index, title: titleTextField.text ?? "", description: descriptionTextField.text ?? "", startDate: startDate, endDate: endDate) else {
+            return
+        }
+        WishEventCreationView.index += 1;
+        onSave?(event)
+        dismiss(animated: true)
     }
 }
 

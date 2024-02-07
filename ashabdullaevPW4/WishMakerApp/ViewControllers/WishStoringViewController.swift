@@ -47,7 +47,7 @@ final class WishStoringViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Constants.viewBackgroundColor
+        view.backgroundColor = WishMakerViewController.backColor.withAlphaComponent(1)
         
         configureTable()
         configureCloseButton()
@@ -94,8 +94,8 @@ extension WishStoringViewController: UITableViewDataSource {
             return Constants.addWishCellAmount;
         }
         print("Compare size")
-        print(wishArray.count == CoreDataManager.shared.fetchWish().count)
-        return CoreDataManager.shared.fetchWish().count
+        print(wishArray.count == CoreDataWishManager.shared.fetchWish().count)
+        return CoreDataWishManager.shared.fetchWish().count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -109,7 +109,7 @@ extension WishStoringViewController: UITableViewDataSource {
                     return
                 }
                 self?.wishArray.append(wish)
-                CoreDataManager.shared.createWish(id: self?.wishTable.numberOfRows(inSection: Constants.writtenWishSectionIndex) ?? Int(), wishText: wish)
+                CoreDataWishManager.shared.createWish(id: self?.wishTable.numberOfRows(inSection: Constants.writtenWishSectionIndex) ?? Int(), wishText: wish)
                 self?.wishTable.reloadData()
                 self?.defaults.set(self?.wishArray, forKey: Constants.wishesKey)
             })
@@ -127,17 +127,17 @@ extension WishStoringViewController: UITableViewDataSource {
                             return
                         }
                         self?.wishArray.append(wish)
-                        CoreDataManager.shared.createWish(id: self?.wishTable.numberOfRows(inSection: Constants.writtenWishSectionIndex) ?? Int(), wishText: wish)
+                        CoreDataWishManager.shared.createWish(id: self?.wishTable.numberOfRows(inSection: Constants.writtenWishSectionIndex) ?? Int(), wishText: wish)
                         self?.wishTable.reloadData()
                         self?.defaults.set(self?.wishArray, forKey: Constants.wishesKey)
                         return
                     }
                     if wish.isEmpty {
                         self?.wishArray.remove(at: indexPath.row)
-                        CoreDataManager.shared.deleteWish(id: indexPath.row)
+                        CoreDataWishManager.shared.deleteWish(id: indexPath.row)
                     } else {
                         self?.wishArray[indexPath.row] = wish
-                        CoreDataManager.shared.updateWish(id: indexPath.row, newWishText: wish)
+                        CoreDataWishManager.shared.updateWish(id: indexPath.row, newWishText: wish)
                     }
                     self?.lastSelectedWish = nil;
                     self?.wishTable.deselectRow(at: indexPath, animated: true)
@@ -152,9 +152,9 @@ extension WishStoringViewController: UITableViewDataSource {
         guard let wishCell = cell as? WrittenWishCell else { return cell }
         
         wishCell.configure(with: wishArray[indexPath.row])
-        wishCell.configure(with: CoreDataManager.shared.fetchWish(id: indexPath.row)?.text ?? String())
+        wishCell.configure(with: CoreDataWishManager.shared.fetchWish(id: indexPath.row)?.text ?? String())
         print("Compare element")
-        print(wishArray[indexPath.row] == (CoreDataManager.shared.fetchWish(id: indexPath.row)?.text ?? String()))
+        print(wishArray[indexPath.row] == (CoreDataWishManager.shared.fetchWish(id: indexPath.row)?.text ?? String()))
         return wishCell
     }
     

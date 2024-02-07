@@ -7,9 +7,10 @@
 
 import CoreData
 
-public struct WishEventModel  {
-    var title: String = ""
-    var descriptionText: String = ""
-    var startDate: Date
-    var endDate: Date
+public class WishEventModel : NSManagedObject {
+    @NSManaged var id: Int
+    @NSManaged var title: String
+    @NSManaged var descriptionText: String
+    @NSManaged var startDate: Date
+    @NSManaged var endDate: Date
 }

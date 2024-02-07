@@ -73,7 +73,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         wishEntity.properties = [idAttribute, textAttribute]
         
-        model.entities = [wishEntity]
+        let eventWishEntity = NSEntityDescription()
+        eventWishEntity.name = "WishEventModel"
+        eventWishEntity.managedObjectClassName = NSStringFromClass(WishEventModel.self)
+        
+        let idWishAttribute = NSAttributeDescription()
+        idWishAttribute.name = "id"
+        idWishAttribute.attributeType = .integer64AttributeType
+        idWishAttribute.isOptional = false
+
+        let titleAttribute = NSAttributeDescription()
+        titleAttribute.name = "title"
+        titleAttribute.attributeType = .stringAttributeType
+        titleAttribute.isOptional = false
+
+        let descriptionAttribute = NSAttributeDescription()
+        descriptionAttribute.name = "descriptionText"
+        descriptionAttribute.attributeType = .stringAttributeType
+        descriptionAttribute.isOptional = false
+
+        let startDateAttribute = NSAttributeDescription()
+        startDateAttribute.name = "startDate"
+        startDateAttribute.attributeType = .dateAttributeType
+        startDateAttribute.isOptional = false
+
+        let endDateAttribute = NSAttributeDescription()
+        endDateAttribute.name = "endDate"
+        endDateAttribute.attributeType = .dateAttributeType
+        endDateAttribute.isOptional = false
+
+        eventWishEntity.properties = [idWishAttribute, titleAttribute, descriptionAttribute, startDateAttribute, endDateAttribute]
+
+        model.entities = [wishEntity, eventWishEntity]
 
         return model
     }

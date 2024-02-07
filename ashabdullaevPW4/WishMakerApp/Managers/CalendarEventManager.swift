@@ -8,7 +8,7 @@
 import EventKit
 
 protocol CalendarManaging {
-    func create(eventModel: CalendarEventModel) -> Bool
+    func create(eventModel: WishEventModel) -> Bool
 }
 
 struct CalendarEventModel {
@@ -21,7 +21,7 @@ struct CalendarEventModel {
 final class CalendarManager: CalendarManaging {
     private let eventStore : EKEventStore = EKEventStore()
     
-    func create(eventModel: CalendarEventModel) -> Bool {
+    func create(eventModel: WishEventModel) -> Bool {
         var result: Bool = false
         let group = DispatchGroup()
         group.enter()
@@ -33,7 +33,7 @@ final class CalendarManager: CalendarManaging {
         return result
     }
     
-    func create(eventModel: CalendarEventModel, completion: ((Bool) -> Void)?) {
+    func create(eventModel: WishEventModel, completion: ((Bool) -> Void)?) {
         let createEvent: EKEventStoreRequestAccessCompletionHandler = { [weak self] (granted,
                                                                                      error) in
             guard granted, error == nil, let self else {
@@ -44,7 +44,7 @@ final class CalendarManager: CalendarManaging {
             event.title = eventModel.title
             event.startDate = eventModel.startDate
             event.endDate = eventModel.endDate
-            event.notes = eventModel.note
+            event.notes = eventModel.descriptionText
             event.calendar = self.eventStore.defaultCalendarForNewEvents
             do {
                 try self.eventStore.save(event, span: .thisEvent)

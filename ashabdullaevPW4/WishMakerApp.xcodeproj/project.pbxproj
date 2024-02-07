@@ -18,13 +18,14 @@
 		01D443C42AD02C6F00A81F5E /* CustomSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D443C32AD02C6F00A81F5E /* CustomSwitch.swift */; };
 		01F761EA2AEFCE3F003F19EF /* WrittenWishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F761E92AEFCE3F003F19EF /* WrittenWishCell.swift */; };
 		01F761EC2AF17154003F19EF /* AddWishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F761EB2AF17154003F19EF /* AddWishCell.swift */; };
-		01F9696F2B72C64E0040F755 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9696D2B72C64E0040F755 /* CoreDataManager.swift */; };
+		01F9696F2B72C64E0040F755 /* CoreDataWishManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9696D2B72C64E0040F755 /* CoreDataWishManager.swift */; };
 		01F969702B72C64E0040F755 /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9696E2B72C64E0040F755 /* Wish.swift */; };
 		01F969722B72CB9E0040F755 /* WishCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F969712B72CB9E0040F755 /* WishCalendarViewController.swift */; };
 		01F969742B72D3E00040F755 /* WishEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F969732B72D3E00040F755 /* WishEventCell.swift */; };
 		01F969762B72D66C0040F755 /* WishEventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F969752B72D66C0040F755 /* WishEventModel.swift */; };
 		01F969782B72DD630040F755 /* WishEventCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F969772B72DD630040F755 /* WishEventCreationView.swift */; };
 		01F9697A2B72E0550040F755 /* CalendarEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F969792B72E0550040F755 /* CalendarEventManager.swift */; };
+		01F9697D2B73027A0040F755 /* CoreDataEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F9697C2B73027A0040F755 /* CoreDataEventManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,13 +42,14 @@
 		01D443C32AD02C6F00A81F5E /* CustomSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSwitch.swift; sourceTree = "<group>"; };
 		01F761E92AEFCE3F003F19EF /* WrittenWishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittenWishCell.swift; sourceTree = "<group>"; };
 		01F761EB2AF17154003F19EF /* AddWishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWishCell.swift; sourceTree = "<group>"; };
-		01F9696D2B72C64E0040F755 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		01F9696D2B72C64E0040F755 /* CoreDataWishManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataWishManager.swift; sourceTree = "<group>"; };
 		01F9696E2B72C64E0040F755 /* Wish.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wish.swift; sourceTree = "<group>"; };
 		01F969712B72CB9E0040F755 /* WishCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishCalendarViewController.swift; sourceTree = "<group>"; };
 		01F969732B72D3E00040F755 /* WishEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEventCell.swift; sourceTree = "<group>"; };
 		01F969752B72D66C0040F755 /* WishEventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEventModel.swift; sourceTree = "<group>"; };
 		01F969772B72DD630040F755 /* WishEventCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEventCreationView.swift; sourceTree = "<group>"; };
 		01F969792B72E0550040F755 /* CalendarEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventManager.swift; sourceTree = "<group>"; };
+		01F9697C2B73027A0040F755 /* CoreDataEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEventManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,8 +139,9 @@
 		01F9697B2B72E2CB0040F755 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				01F9696D2B72C64E0040F755 /* CoreDataManager.swift */,
+				01F9696D2B72C64E0040F755 /* CoreDataWishManager.swift */,
 				01F969792B72E0550040F755 /* CalendarEventManager.swift */,
+				01F9697C2B73027A0040F755 /* CoreDataEventManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -221,10 +224,11 @@
 				011E60E62B72C421007EE71F /* WishMakerViewController.swift in Sources */,
 				01F969742B72D3E00040F755 /* WishEventCell.swift in Sources */,
 				01F969722B72CB9E0040F755 /* WishCalendarViewController.swift in Sources */,
+				01F9697D2B73027A0040F755 /* CoreDataEventManager.swift in Sources */,
 				01F761EA2AEFCE3F003F19EF /* WrittenWishCell.swift in Sources */,
 				011E60E72B72C421007EE71F /* WishStoringViewController.swift in Sources */,
 				01F969762B72D66C0040F755 /* WishEventModel.swift in Sources */,
-				01F9696F2B72C64E0040F755 /* CoreDataManager.swift in Sources */,
+				01F9696F2B72C64E0040F755 /* CoreDataWishManager.swift in Sources */,
 				0136E1C12ACC47F600171788 /* SceneDelegate.swift in Sources */,
 				01D443C42AD02C6F00A81F5E /* CustomSwitch.swift in Sources */,
 				01F761EC2AF17154003F19EF /* AddWishCell.swift in Sources */,

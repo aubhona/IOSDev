@@ -8,8 +8,8 @@
 import UIKit
 import CoreData
 
-public final class CoreDataManager : NSObject {
-    public static let shared = CoreDataManager()
+public final class CoreDataWishManager : NSObject {
+    public static let shared = CoreDataWishManager()
     
     private override init() {}
     

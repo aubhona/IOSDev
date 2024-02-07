@@ -8,6 +8,7 @@ final class WishEventCell: UICollectionViewCell {
     
     // MARK: - Constants
     private enum Constants {
+        static let cellSelectionStyle: UITableViewCell.SelectionStyle = .none
         static let cellCornerRadius: CGFloat = 12
         static let cellMargin: CGFloat = 16
         static let cellBackgroundColor: UIColor = .clear
@@ -35,7 +36,7 @@ final class WishEventCell: UICollectionViewCell {
     }
     
     // MARK: - UI Elements
-    private let wrapView: UIView = UIView()
+    let wrapView: UIView = UIView()
     private let titleLabel: UILabel = UILabel()
     private let descriptionLabel: UILabel = UILabel()
     private let startDateLabel: UILabel = UILabel()
