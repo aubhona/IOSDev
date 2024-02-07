@@ -12,10 +12,12 @@ class CoffeeMapVC: UIViewController, CLLocationManagerDelegate, UITableViewDataS
     let locationManager = CLLocationManager() // Менеджер геолокации
     var coffeeShops: [MKMapItem] = [] // Массив для найденных кофеен
     var currentRouteOverlays: [MKOverlay] = [] // Массив для маршрутов
-
+    var selectedCoffeeShop: MKMapItem?
+    var lastKnownLocation: CLLocationCoordinate2D?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        view.backgroundColor = .systemBackground
+        //        view.backgroundColor = .systemBackground
         setupMap()
         setupTableView()
         requestLocationAuthorization()
@@ -50,13 +52,12 @@ class CoffeeMapVC: UIViewController, CLLocationManagerDelegate, UITableViewDataS
     private func requestLocationAuthorization() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest // Настройка точности определения местоположения
-        locationManager.requestAlwaysAuthorization() // Запрос разрешения на постоянное использование геолокации
+        locationManager.requestWhenInUseAuthorization() // Запрос разрешения на постоянное использование геолокации
         locationManager.startUpdatingLocation() // Начало обновления информации о местоположении
     }
     
     // MARK: - Поиск кофеен
     private func searchCoffeeShops(in region: MKCoordinateRegion) {
-        // Формируем запрос
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = "coffee"
         request.region = region
@@ -67,47 +68,48 @@ class CoffeeMapVC: UIViewController, CLLocationManagerDelegate, UITableViewDataS
                 print("Error")
                 return
             }
-            self.coffeeShops = response.mapItems // Сохранение результатов поиска
-            self.tableView.reloadData() // Обновление таблицы
-
-            // Добавление аннотаций
+            self.coffeeShops = response.mapItems
+            self.tableView.reloadData()
+            
+            self.mapView.removeAnnotations(self.mapView.annotations)
+            
             for item in response.mapItems {
                 let annotation = CoffeeShopAnnotation(title: item.name ?? "", coordinate: item.placemark.coordinate, info: "")
                 self.mapView.addAnnotation(annotation)
             }
         }
-//        mapView.showsUserLocation = false
     }
     
     // MARK: - Маршрут до выбранной кофейни
     private func routeToCoffeeShop(destination: MKMapItem) {
-        // Очистка карты
         mapView.removeOverlays(currentRouteOverlays)
         currentRouteOverlays.removeAll()
-
-        guard let sourceCoordinate = locationManager.location?.coordinate else { return }
-
-        let sourcePlacemark = MKPlacemark(coordinate: sourceCoordinate)
+        if lastKnownLocation == nil && locationManager.location?.coordinate == nil {
+            return
+        }
+        var sourceCoordinate = locationManager.location?.coordinate
+        if (sourceCoordinate == nil) {
+            sourceCoordinate = lastKnownLocation!
+        }
+        let sourcePlacemark = MKPlacemark(coordinate: sourceCoordinate!)
         let destinationPlacemark = MKPlacemark(coordinate: destination.placemark.coordinate)
-
+        
         let directionRequest = MKDirections.Request()
         directionRequest.source = MKMapItem(placemark: sourcePlacemark)
         directionRequest.destination = MKMapItem(placemark: destinationPlacemark)
         directionRequest.transportType = .automobile
-
-        // Выполнение запроса на построение маршрута
+        
         let directions = MKDirections(request: directionRequest)
         directions.calculate { [weak self] (response, error) in
             guard let self = self, let response = response else {
                 print("Error")
                 return
             }
-
+            
             let route = response.routes[0]
             self.mapView.addOverlay(route.polyline, level: .aboveRoads)
             self.currentRouteOverlays.append(route.polyline)
-
-            // Настройка отображения маршрута на карте
+            
             let rect = route.polyline.boundingMapRect
             self.mapView.setVisibleMapRect(rect, edgePadding: UIEdgeInsets(top: 40, left: 40, bottom: 40, right: 40), animated: true)
         }
@@ -115,19 +117,34 @@ class CoffeeMapVC: UIViewController, CLLocationManagerDelegate, UITableViewDataS
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
+            //            locationManager.stopUpdatingLocation()
+            if  (lastKnownLocation == nil) {
+                let userLocation = location.coordinate
+                let regionRadius: CLLocationDistance = 1000
+                let region = MKCoordinateRegion(center: userLocation, latitudinalMeters: regionRadius, longitudinalMeters: regionRadius)
+                mapView.setRegion(region, animated: true)
+                searchCoffeeShops(in: region)
+                self.lastKnownLocation = userLocation
+                return
+            }
             let userLocation = location.coordinate
-            let regionRadius: CLLocationDistance = 1000
-            let region = MKCoordinateRegion(center: userLocation, latitudinalMeters: regionRadius, longitudinalMeters: regionRadius)
-            mapView.setRegion(region, animated: true)
-            searchCoffeeShops(in: region)
-            locationManager.stopUpdatingLocation()
+            if userLocation.distance(from: lastKnownLocation!) > 11.8 {
+                let regionRadius: CLLocationDistance = 1000
+                let region = MKCoordinateRegion(center: userLocation, latitudinalMeters: regionRadius, longitudinalMeters: regionRadius)
+                
+                searchCoffeeShops(in: region)
+                if let destination = selectedCoffeeShop {
+                    routeToCoffeeShop(destination: destination)
+                }
+            }
+            self.lastKnownLocation = userLocation
         }
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return coffeeShops.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let coffeeShop = coffeeShops[indexPath.row]
@@ -136,10 +153,10 @@ class CoffeeMapVC: UIViewController, CLLocationManagerDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedCoffeeShop = coffeeShops[indexPath.row]
-        routeToCoffeeShop(destination: selectedCoffeeShop)
+        selectedCoffeeShop = coffeeShops[indexPath.row]
+        routeToCoffeeShop(destination: selectedCoffeeShop!)
     }
-
+    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let polyline = overlay as? MKPolyline {
             let renderer = MKPolylineRenderer(polyline: polyline)
@@ -153,16 +170,30 @@ class CoffeeMapVC: UIViewController, CLLocationManagerDelegate, UITableViewDataS
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKUserLocation {
             return nil
+        } else if let cluster = annotation as? MKClusterAnnotation {
+            var view = mapView.dequeueReusableAnnotationView(withIdentifier: "cluster") as? MKMarkerAnnotationView
+            if view == nil {
+                view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "cluster")
+                view?.markerTintColor = .red
+                view?.glyphText = "\(cluster.memberAnnotations.count)"
+            } else {
+                view?.annotation = annotation
+            }
+            return view
+        } else {
+            var view = mapView.dequeueReusableAnnotationView(withIdentifier: "CoffeeShopAnnotation") as? MKMarkerAnnotationView
+            if view == nil {
+                view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "CoffeeShopAnnotation")
+                view?.glyphTintColor = .white
+                view?.markerTintColor = .brown
+            } else {
+                view?.annotation = annotation
+            }
+            view?.clusteringIdentifier = "coffeeShop"
+            return view
         }
-        let view = MKAnnotationView(annotation: annotation, reuseIdentifier: "CoffeeShopAnnotation")
-        if let customImage = UIImage(named: "test") {
-            let backgroundColor = UIColor.white
-            let resizedAndRoundedImage = resizeImage(image: customImage, targetSize: CGSize(width: 30, height: 30), backgroundColor: backgroundColor)
-            view.image = resizedAndRoundedImage
-        }
-        view.canShowCallout = true
-        return view
     }
+    
     
     func resizeImage(image: UIImage, targetSize: CGSize, backgroundColor: UIColor) -> UIImage {
         let size = image.size
@@ -175,7 +206,7 @@ class CoffeeMapVC: UIViewController, CLLocationManagerDelegate, UITableViewDataS
             newSize = CGSize(width: size.width * widthRatio, height: size.height * widthRatio)
         }
         let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
-
+        
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
         let context = UIGraphicsGetCurrentContext()!
         context.addEllipse(in: rect)
@@ -184,10 +215,18 @@ class CoffeeMapVC: UIViewController, CLLocationManagerDelegate, UITableViewDataS
         context.setFillColor(backgroundColor.cgColor)
         context.fill(rect)
         image.draw(in: rect)
-
+        
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-
+        
         return newImage!
+    }
+}
+
+extension CLLocationCoordinate2D {
+    func distance(from coordinate: CLLocationCoordinate2D) -> CLLocationDistance {
+        let from = CLLocation(latitude: self.latitude, longitude: self.longitude)
+        let to = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        return from.distance(from: to)
     }
 }

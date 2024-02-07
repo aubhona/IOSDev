@@ -17,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01DEA0C92B73F304008ABEDF /* Moving.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Moving.gpx; sourceTree = "<group>"; };
 		37ED749E2B6CF98B007065DC /* UIView+Pin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Pin.swift"; sourceTree = "<group>"; };
 		B890B57D2B35E14000B3F761 /* CoffeeMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoffeeMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B890B5802B35E14000B3F761 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +99,7 @@
 				37ED749C2B6CF80E007065DC /* Models */,
 				37ED749D2B6CF92A007065DC /* Extensions */,
 				37ED749A2B6CF732007065DC /* App */,
+				01DEA0C92B73F304008ABEDF /* Moving.gpx */,
 			);
 			path = CoffeeMap;
 			sourceTree = "<group>";
